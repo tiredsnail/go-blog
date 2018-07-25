@@ -38,9 +38,11 @@ func Index(w http.ResponseWriter,r *http.Request) {
 		ArticleList: models.ArticlePostList(page, 3,""),
 		Archive: models.Archive(),
 	}
-	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	bwy.InitTemplate("./views/index.html", "./views/common/_list.html", "./views/common/_header.html", "./views/common/_rside.html")	//模板
-	bwy.View(w, "index", rd)
+	MyTemplate := bwy.InitTemplate()
+	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	//模板
+	MyTemplate.ParseFiles("./views/index.html", "./views/common/_list.html", "./views/common/_header.html", "./views/common/_rside.html")
+	MyTemplate.ExecuteTemplate(w, "index", rd)
 }
 
 //分类文章列表
@@ -62,9 +64,11 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"type_url='"+types+"'"),
 	}
-	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	bwy.InitTemplate("./views/type.html", "./views/common/_list.html", "./views/common/_nav.html")	//模板
-	bwy.View(w, "type", rd)
+
+	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
+	//模板
+	MyTemplate.ParseFiles("./views/type.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ExecuteTemplate(w, "type", rd)
 }
 
 //归档文章列表
@@ -102,9 +106,12 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 		ArticleList: models.ArticlePostList(page, 3,"created_at>'"+strconv.Itoa(int(startTime))+"' and created_at<'"+strconv.Itoa(int(endTime))+"'"),
 		Archive: models.Archive(),
 	}
-	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	bwy.InitTemplate("./views/archive.html", "./views/common/_list.html", "./views/common/_nav.html")	//模板
-	bwy.View(w, "archive", rd)
+
+	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
+
+	//模板
+	MyTemplate.ParseFiles("./views/archive.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ExecuteTemplate(w, "archive", rd)
 }
 
 //文章详情
@@ -124,9 +131,17 @@ func Post(w http.ResponseWriter,r *http.Request) {
 		ArticleData: models.ArticlePost(article_id),
 		//Archive: models.Archive(),
 	}
-	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	bwy.InitTemplate("./views/post.html", "./views/common/_header.html")	//模板
-	bwy.View(w, "post", rd)
+
+	MyTemplate := bwy.InitTemplate()
+	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	MyTemplate.ParseFiles("./views/post.html", "./views/common/_header.html")
+	MyTemplate.ExecuteTemplate(w, "post", rd)
+
+	//MyTemplate := bwy.InitTemplate()
+	//MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	//MyTemplate.ParseFiles("./views/test.html","./views/common/_test.html")
+	//MyTemplate.ExecuteTemplate(w, "test", "")
+
 }
 
 

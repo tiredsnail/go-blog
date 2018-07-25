@@ -1,14 +1,11 @@
 package engine
 import (
 	"net/http"
-	"html/template"
 	"www/bwy"
 	bc "www/bwy/config"
 	"www/config"
 )
 func Engine(w http.ResponseWriter,r *http.Request) {
-	bwy.MyTemplate = template.New("")
-
 	//常量定义
 	bwy.CONSTS_URL_PATH = r.URL.Path
 

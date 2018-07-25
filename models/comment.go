@@ -46,7 +46,7 @@ func CommentAdd(data *CommentData) (int64,error) {
 }
 
 func CommentList(page int,num int, article_id string) (*ArticleListData) {
-	bwy.MyLog("--------------------------------------")
+	bwy.MyLog("评论--------------------------------------")
 	//time.Sleep(3000000000)
 	ALD := ArticleListData{}
 	DB := db.Db{}

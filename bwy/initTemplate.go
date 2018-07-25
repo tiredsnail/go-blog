@@ -2,31 +2,32 @@ package bwy
 
 
 import (
-	"fmt"
 	"html/template"
 	"time"
 	"strconv"
 	"io"
 )
 
-var MyTemplate *template.Template
+//var MyTemplate struct{
+//	Template *template.Template
+//}
 
-func InitTemplate(fileName ...string) (err error){
-
+func InitTemplate() (MyTemplate *template.Template){
+	MyTemplate = template.New("")
+	//自定义公共 模板方法
 	MyTemplate = MyTemplate.Funcs(template.FuncMap{"unescaped": unescaped,"strtotime": strtotime})
-
-	MyTemplate ,err = MyTemplate.ParseFiles(fileName...)
-	//MyTemplate = template.Must()
-	if err != nil{
-		fmt.Println("parse file err:",err)
-		return
-	}
-	return
+	return MyTemplate
+	//MyTemplate ,err = MyTemplate.ParseFiles(fileName...)
+	////MyTemplate = template.Must()
+	//if err != nil{
+	//	fmt.Println("parse file err:",err)
+	//	return MyTemplate,err
+	//}
 }
 
 func View(wr io.Writer, name string, data interface{}) {
 
-	MyTemplate.ExecuteTemplate(wr, name, data)
+	//MyTemplate.ExecuteTemplate(wr, name, data)
 }
 
 //添加函数方法
