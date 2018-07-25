@@ -1,0 +1,27 @@
+{{ define "_list" }}
+
+<div id="lside">
+    {{ range .List }}
+        <article>
+            <h2 class="line-limit-length-title"><a href="/post/{{.article_id}}">{{.headline}}</a></h2>
+            <div class="entry_header">
+                <time>{{.updated_at | strtotime}}</time>
+                <a href="/type/{{.type_url}}">{{.type_name}}</a>
+                <span>{{.comm}}条评论</span>
+                <span>{{.pv}}人浏览</span>
+            </div>
+            <div class="entry_content">
+                {{ .summary | unescaped }}
+            </div>
+        </article>
+    {{ else }}
+        <h1>数据查询失败</h1>
+    {{ end }}
+    <div class="pagebar">
+        Pages({{.Page}})
+        <ul class="pagination">
+            {{mypages .Page .CurrentPage }}
+        </ul>
+    </div>
+</div>
+{{ end }}

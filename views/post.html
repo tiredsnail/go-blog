@@ -1,0 +1,298 @@
+{{ define "post" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.ArticleData.Headline}} - {{.Title}}</title>
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?v=1.1.3">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/art.css?v=1.1.4">
+
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/layui/css/layui.css"  media="all">
+</head>
+<body>
+{{template "_header" .Nav}}
+<div id="main">
+    <div id="lside">
+{{ with .ArticleData }}
+        <article>
+            <h3>{{.Headline}}</h3>
+            <div class="entry_header">
+                <time>{{.Updated_at | strtotime}}</time>
+                <a href="/{{.Type_name}}">{{.Type_name}}</a>
+                <span>{{.Comm}}条评论</span>
+                <span>{{.Pv}}人浏览</span>
+            </div>
+            <div class="content">
+                {{.Content | unescaped}}
+            </div>
+        </article>
+{{end}}
+        <div id="comments">
+            <div id="comment">
+                <h2>评论列表</h2>
+                <ol>
+                    <li>
+                        加载中 ...
+                    </li>
+                </ol>
+            </div>
+            <div id="page"></div>
+        </div>
+
+    <div id="respond">
+            <h3><a name="comment">Leave a Comment</a></h3>
+            <form action="/comment/add" method="post">
+                <p>
+                    <input placeholder="your name" id="bwy_username" name="bwy_username" type="text" value="" size="30"><span style="color:#fc3c00;">*</span>
+                </p>
+                <p>
+                    <input placeholder="Email" id="bwy_email" name="bwy_email" type="text" value="" size="30"><span style="color:#fc3c00;">*</span>
+                </p>
+                <p>
+                    <input placeholder="personal homepage" id="bwy_url" name="bwy_url" type="text" value="http://" size="30">
+                </p>
+                <span id="huifu"></span>
+                <p>
+                    <textarea name="bwy_comment" cols="40" rows="7" id="bwy_comment"></textarea><span style="color:#fc3c00;">*</span>
+                <p>
+                    <input type="button" value="Post Comment" onclick="button()">
+                </p>
+                <input type="hidden" value="" id="pid">
+            </form>
+        </div>
+    </div>
+
+    <script src="http://127.0.0.1:81/static/layui/layui.js" charset="utf-8"></script>
+    <script>
+        //分页
+        window.onload=function (){
+            // commentList()
+            setTimeout('commentInfo()',2000);   //2秒后执行
+        }
+        function commentInfo() {
+            commentList(1)
+        }
+
+        function commentList(page=1) {
+            var commentHttp
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp=new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    var obj = JSON.parse(xmlhttp.responseText);
+                    // viewlist(obj['data'])
+                    if (obj.status == 'ok') {
+                        viewlist(obj.data)
+                    } else {
+                        alert(obj.msg)
+                    }
+                    // document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+                }
+            }
+
+            //需要POST的值，把每个变量都通过&来联接
+
+            var postStr = 'page='+page+
+                        '&article_id={{.ArticleData.Article_id}}';
+            xmlhttp.open("POST","/comment/list/",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.send(postStr);
+        }
+        //评论列表渲染
+        var pageinit
+        function viewlist(data) {
+            var comments = document.getElementById("comment");
+            comments.innerHTML = "<h2>评论列表</h2>"
+            data['List'].forEach(function(value,index){
+                var urls = value.url?value.url:"javascript:;"
+                if (value.pnick) {
+                    comments.insertAdjacentHTML("beforeend","<ol>\n" +
+                            "<li>" +
+                            "<cite><a href='"+urls+"'>"+value.nick+"</a></cite> <br>" +
+                            "<time>"+getDate(value.created_at)+"</time>" +
+                            "<span> | <b style='color: #fc3c00'><a href='#comment' onclick='Reply(this)' nick='"+value.nick+"' comment_id='"+value.comment_id+"'>回复</a></b></span>"+
+                            "</li>" +
+                            "<li>"+value.content+"</li>" +
+                            "<li>\n" +
+                            "<cite><a href='javascript:;'>@"+value.pnick+"</a></cite> <br>" + value.pcontent +
+                            "</li>" +
+                            "</ol>");
+                } else {
+                    comments.insertAdjacentHTML("beforeend","<ol>"+
+                            "<li>" +
+                            "<cite><a href='"+urls+"'>"+value.nick+"</a></cite> <br>" +
+                            "<time>"+getDate(value.created_at)+"</time>" +
+                            "<span> | <b style='color: #fc3c00'><a href='#comment' onclick='Reply(this)' nick='"+value.nick+"' comment_id='"+value.comment_id+"'>回复</a></b></span>"+
+                            "</li>" +
+                            "<li>"+value.content+"</li>" +
+                            "</ol>");
+
+                }
+
+                //comments.insertAdjacentHTML("beforeend","神经病 操你妈");
+
+
+            });
+
+            //分页
+            if (pageinit) {
+                return
+            }
+            console.log(data.CurrentPage);
+            layui.use(['laypage', 'layer'], function() {
+                var laypage = layui.laypage
+                        , layer = layui.layer;
+
+                laypage.render({
+                    elem: 'page'
+                    , limit:5
+                    , count: data.Page * 5 //数据总数
+                    , jump: function (obj, first) {
+                        if (!first) {
+                            commentList(obj.curr)
+                        }
+                        if(obj.curr != data.CurrentPage){
+                        }
+                    }
+                });
+            })
+            pageinit = true
+
+            // page(data['Page'])
+            // goPage(data["CurrentPage"],data["Page"],5)
+        }
+
+        //评论提交
+        function button() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp=new XMLHttpRequest();
+            } else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function()
+            {
+                /*
+                 * 2    服务器向浏览器响应请求
+                 *
+                 * readyState 属性表示Ajax请求的当前状态。它的值用数字代表。
+                        0 代表未初始化。 还没有调用 open 方法
+                        1 代表正在加载。 open 方法已被调用，但 send 方法还没有被调用
+                        2 代表已加载完毕。send 已被调用。请求已经开始
+                        3 代表交互中。服务器正在发送响应
+                        4 代表完成。响应发送完毕
+
+                    常用状态码及其含义：
+                        404 没找到页面(not found)
+                        403 禁止访问(forbidden)
+                        500 内部服务器出错(internal service error)
+                        200 一切正常(ok)
+                        304 没有被修改(not modified)(服务器返回304状态，表示源文件没有被修改 )
+                 */
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    var obj = JSON.parse(xmlhttp.responseText);
+                    if (obj.status == 'ok') {
+                        alert(obj.msg)
+                    } else {
+                        alert(obj.msg)
+                    }
+                    // document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+                }
+            }
+
+            //需要POST的值，把每个变量都通过&来联接
+
+            if (!document.getElementById("bwy_username").value) {
+                alert("你的昵称不能为空！！")
+                return
+            }
+            if (!document.getElementById("bwy_email").value) {
+                alert("你的邮箱不能为空！！")
+                return
+            }
+            if (!document.getElementById("bwy_comment").value) {
+                alert("内容不能为空！！")
+                return
+            }
+            if (document.getElementById("bwy_url").value == 'http://') {
+                var url=""
+            }
+            //判断是否有回复
+            var pid = document.getElementById("pid").value
+            if (pid != '') {
+                pid = "&pid="+pid
+            }
+            var postStr = 'bwy_username='+ document.getElementById("bwy_username").value+
+                    '&bwy_email='+ document.getElementById("bwy_email").value+
+                    '&bwy_url='+url+pid+
+                    '&bwy_comment='+ document.getElementById("bwy_comment").value+
+                    '&article_id={{.ArticleData.Article_id}}';
+            xmlhttp.open("POST","/comment/add/?article_id={{.ArticleData.Article_id}}",true);
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.send(postStr);
+        }
+        
+        //回复
+        function Reply(obj) {
+            console.log(obj);
+            document.getElementById("pid").value = obj.getAttribute('comment_id')
+            var nick = obj.getAttribute('nick')
+            document.getElementById("huifu").innerText = "@"+nick+" "
+        }
+
+
+        function getDate(date){
+            var t = new Date(date*1000).toLocaleString();
+            return t;
+        }
+    </script>
+
+    <div id="rside">
+        <aside>
+            <h4>最近文章</h4>
+            <ul>
+            {{/*<b>2014</b>*/}}
+            {{ range .ArticleList.Data }}
+                <li class="line-limit-length"><a href="/post/{{.article_id}}">{{.headline}}</a></li>
+            {{end}}
+            </ul>
+        </aside>
+        <aside>
+            <h4>归档</h4>
+            <ul>
+            {{/*<b>2014</b>*/}}
+            {{ range .Archive }}
+                <li class="line-limit-length"><a href="/archive/{{.created_at}}">{{.created_at}}</a><span>&nbsp;({{.cnt}})</span></li>
+            {{end}}
+            </ul>
+        </aside>
+        <aside>
+            <h4>公众号:</h4>
+            <img src="https://cdn1.baiwuya.cn/blog/assets/wxgzh.jpg" alt="" width="200px">
+        </aside>
+    </div>
+
+</div>
+<footer>
+    Copyright &copy; 2017-2018 Bai Wu Ya
+</footer>
+
+
+<script>
+
+</script>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,33 @@
+{{ define "type" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{.Title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?time=1.1.5">
+</head>
+<body>
+{{template "_nav" .Nav}}
+<div id="main">
+
+    {{template "_list" .ArticleList}}
+
+    <div id="rside">
+        <aside>
+            <form action="">
+                <input type="text" name="search" placeholder="Search...">
+            </form>
+        </aside>
+        <aside>
+            <h4>公众号:</h4>
+            <img src="https://cdn1.baiwuya.cn/blog/assets/wxgzh.jpg" alt="" width="200px">
+        </aside>
+    </div>
+</div>
+<footer>
+    Copyright &copy; 2017-2018 Bai Wu Ya
+</footer>
+</body>
+</html>
+{{ end }}

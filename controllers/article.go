@@ -1,0 +1,160 @@
+package controllers
+
+import (
+	"net/http"
+	"html/template"
+	"www/bwy"
+	"fmt"
+	"www/models"
+	"strconv"
+	"strings"
+	"time"
+)
+
+type RetData struct {
+	Description string
+	Title 		string
+	Nav			[]map[string]string
+	ArticleList	*models.ArticleListData
+	Archive		[]map[string]string
+	ArticleData *models.ArticleData
+}
+var URL_PATH string
+func Index(w http.ResponseWriter,r *http.Request) {
+	//接收参数
+	page := 1
+	req := strings.Split(r.URL.Path, "/")
+	if len(req) > 2 {
+		page ,_ = strconv.Atoi(req[2])
+		if page ==0 {page++}
+	}
+
+	//分页使用
+	URL_PATH = ""
+
+	rd := RetData{
+		Title: "白乌鸦 - 一个phper的博客",
+		Nav: LayoutType(),
+		ArticleList: models.ArticlePostList(page, 3,""),
+		Archive: models.Archive(),
+	}
+	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	bwy.InitTemplate("./views/index.html", "./views/common/_list.html", "./views/common/_header.html", "./views/common/_rside.html")	//模板
+	bwy.View(w, "index", rd)
+}
+
+//分类文章列表
+func TypeArticleList(w http.ResponseWriter,r *http.Request) {
+	page := 1
+	//接收参数
+	req := strings.Split(r.URL.Path, "/")
+	if len(req) > 4 {
+		page ,_ = strconv.Atoi(req[4])
+		if page ==0 {page++}
+	}
+	types := req[2]
+
+	//分页使用
+	URL_PATH = "/type/"+types
+
+	rd := RetData{
+		Title: "白乌鸦 - 一个phper的博客",
+		Nav: LayoutType(),
+		ArticleList: models.ArticlePostList(page, 3,"type_url='"+types+"'"),
+	}
+	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	bwy.InitTemplate("./views/type.html", "./views/common/_list.html", "./views/common/_nav.html")	//模板
+	bwy.View(w, "type", rd)
+}
+
+//归档文章列表
+func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
+	page := 1
+	//接收参数
+	req := strings.Split(r.URL.Path, "/")
+	if len(req) > 4 {
+		page ,_ = strconv.Atoi(req[4])
+		if page ==0 {page++}
+	}
+	created_at := req[2]
+
+	//分页使用
+	URL_PATH = "/archive/"+created_at
+
+	theTime ,err := time.ParseInLocation("2006-01",created_at,time.Local)
+	if err != nil {
+		fmt.Println("时间格式化失败")
+	}
+	year, month, _ := theTime.Date()
+	thisMonth := time.Date(year, month, 1, 0, 0, 0, 0, time.Local)
+	start := thisMonth.AddDate(0, 0, 0).Format("2006-01-02")
+	end := thisMonth.AddDate(0, 1, -1).Format("2006-01-02")
+	theTime, _ = time.ParseInLocation("2006-01-02", start, time.Local) //使用模板在对应时区转化为time.time类型
+	startTime := theTime.Unix()
+	theTime, _ = time.ParseInLocation("2006-01-02", end, time.Local) //使用模板在对应时区转化为time.time类型
+	endTime := theTime.Unix()
+
+
+	rd := RetData{
+		Title: "归档|"+created_at+" - 白乌鸦",
+		Description: "归档日期:"+created_at+" - 白乌鸦",
+		Nav: LayoutType(),
+		ArticleList: models.ArticlePostList(page, 3,"created_at>'"+strconv.Itoa(int(startTime))+"' and created_at<'"+strconv.Itoa(int(endTime))+"'"),
+		Archive: models.Archive(),
+	}
+	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	bwy.InitTemplate("./views/archive.html", "./views/common/_list.html", "./views/common/_nav.html")	//模板
+	bwy.View(w, "archive", rd)
+}
+
+//文章详情
+func Post(w http.ResponseWriter,r *http.Request) {
+	//接收参数
+	var article_id string
+	req := strings.Split(r.URL.Path, "/")
+	if len(req) > 2 {
+		article_id = req[2]
+
+	}
+
+	rd := RetData{
+		Title: "白乌鸦",
+		Nav: LayoutType(),
+		//ArticleList: models.ArticlePostList(1,5,""),
+		ArticleData: models.ArticlePost(article_id),
+		//Archive: models.Archive(),
+	}
+	bwy.MyTemplate = bwy.MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	bwy.InitTemplate("./views/post.html", "./views/common/_header.html")	//模板
+	bwy.View(w, "post", rd)
+}
+
+
+
+
+/**
+	最新评论文章
+*/
+func ArticleNewComment() {
+
+}
+
+
+//分页
+func mypages(page int,currentPage int) template.HTML {
+	var pages string
+	if 1 != currentPage{
+		pages = "<li><a href='"+URL_PATH+"/'> 首页 </a></li>"
+	}
+	if currentPage > 2 {
+		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(currentPage-1)+"'>上一页</a></li>"
+	}
+	pages += "<li><a class='active' href='javascript:;'>"+strconv.Itoa(currentPage)+"</a></li>"
+	if currentPage < page-1 {
+		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(currentPage+1)+"'>下一页</a></li>"
+	}
+	if currentPage < page {
+		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(page)+"'> 末页 </a></li>"
+	}
+	return template.HTML(pages)
+}

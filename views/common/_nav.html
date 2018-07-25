@@ -1,0 +1,13 @@
+{{define "_nav"}}
+<nav>
+    <ul>
+        <li><a href="/">HOME</a></li>
+    {{ range . }}
+        <li><a href="/type/{{.url}}">{{ .name }}</a></li>
+    {{ else }}
+        <li><a href="javascript:;">数据查询失败</a></li>
+    {{ end }}
+    </ul>
+</nav>
+
+{{end}}
