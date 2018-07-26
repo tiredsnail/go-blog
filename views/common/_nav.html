@@ -2,12 +2,8 @@
 <nav>
     <ul>
         <li><a href="/">HOME</a></li>
-    {{ range . }}
-        <li><a href="/type/{{.url}}">{{ .name }}</a></li>
-    {{ else }}
-        <li><a href="javascript:;">数据查询失败</a></li>
-    {{ end }}
+        <li><a href="/archive">归档</a></li>
+        <li><a href="/">关于</a></li>
     </ul>
 </nav>
-
 {{end}}

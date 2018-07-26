@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="http://127.0.0.1:81/static/layui/css/layui.css"  media="all">
 </head>
 <body>
-{{template "_header" .Nav}}
+{{template "_header"}}
 <div id="main">
     <div id="lside">
 {{ with .ArticleData }}
@@ -62,7 +62,6 @@
             </form>
         </div>
     </div>
-
     <script src="http://127.0.0.1:81/static/layui/layui.js" charset="utf-8"></script>
     <script>
         //分页
@@ -259,30 +258,7 @@
         }
     </script>
 
-    <div id="rside">
-        <aside>
-            <h4>最近文章</h4>
-            <ul>
-            {{/*<b>2014</b>*/}}
-            {{ range .ArticleList.Data }}
-                <li class="line-limit-length"><a href="/post/{{.article_id}}">{{.headline}}</a></li>
-            {{end}}
-            </ul>
-        </aside>
-        <aside>
-            <h4>归档</h4>
-            <ul>
-            {{/*<b>2014</b>*/}}
-            {{ range .Archive }}
-                <li class="line-limit-length"><a href="/archive/{{.created_at}}">{{.created_at}}</a><span>&nbsp;({{.cnt}})</span></li>
-            {{end}}
-            </ul>
-        </aside>
-        <aside>
-            <h4>公众号:</h4>
-            <img src="https://cdn1.baiwuya.cn/blog/assets/wxgzh.jpg" alt="" width="200px">
-        </aside>
-    </div>
+    {{template "_rside" .Nav}}
 
 </div>
 <footer>

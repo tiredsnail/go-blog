@@ -5,14 +5,14 @@
     <title>{{.Title}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?time=1.1.3">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?time=1.1.4">
 </head>
 <body>
-{{template "_header" .Nav}}
+{{template "_header"}}
 <div id="main">
 
 {{template "_list" .ArticleList}}
-{{template "_rside" .Archive}}
+{{template "_rside" .Nav}}
 
 </div>
 <footer>

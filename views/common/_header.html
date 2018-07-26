@@ -2,16 +2,21 @@
 
 <header>
     <h1><a href="/">Bai Wu Ya  一个phper的博客</a></h1>
-    <h4>漫漫全栈路，何曾有坦途 ... This is an application developed with golang </h4>
+    <h4>
+        <span>漫漫全栈路，何曾有坦途 ... This is an application developed with golang</span>
+        <span style="float:right;">
+            GitHub: <a href="https://github.com/ibaiwuya" target="view_window">https://github.com/ibaiwuya</a>
+            <b>|</b>
+            Email: <a href="mailto:ibaiwuya@163.com" rel="nofollow">ibaiwuya@163.com</a>
+        </span>
+    </h4>
 </header>
+
 <nav>
     <ul>
         <li><a href="/">HOME</a></li>
-    {{ range . }}
-        <li><a href="/type/{{.url}}">{{ .name }}</a></li>
-    {{ else }}
-        <li><a href="javascript:;">数据查询失败</a></li>
-    {{ end }}
+        <li><a href="/archive">归档</a></li>
+        <li><a href="/">关于</a></li>
     </ul>
 </nav>
 

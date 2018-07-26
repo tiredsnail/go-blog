@@ -36,7 +36,7 @@ func Index(w http.ResponseWriter,r *http.Request) {
 		Title: "白乌鸦 - 一个phper的博客",
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,""),
-		Archive: models.Archive(),
+		//Archive: models.Archive(),
 	}
 	MyTemplate := bwy.InitTemplate()
 	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
@@ -60,15 +60,42 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 	URL_PATH = "/type/"+types
 
 	rd := RetData{
-		Title: "白乌鸦 - 一个phper的博客",
+		Title: types+ " - 白乌鸦 - 一个phper的博客",
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"type_url='"+types+"'"),
 	}
 
 	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
 	//模板
-	MyTemplate.ParseFiles("./views/type.html", "./views/common/_list.html", "./views/common/_nav.html")
-	MyTemplate.ExecuteTemplate(w, "type", rd)
+	MyTemplate.ParseFiles("./views/list.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ExecuteTemplate(w, "list", rd)
+}
+
+//归档页面
+func Archive(w http.ResponseWriter,r *http.Request) {
+	//接收参数
+	page := 1
+	req := strings.Split(r.URL.Path, "/")
+	if len(req) > 2 {
+		page ,_ = strconv.Atoi(req[2])
+		if page ==0 {page++}
+	}
+
+	//分页使用
+	URL_PATH = ""
+
+	rd := RetData{
+		Title: "白乌鸦 - 一个phper的博客",
+		Nav: LayoutType(),
+		ArticleList: models.ArticlePostList(page, 3,""),
+		Archive: models.Archive(),
+	}
+	MyTemplate := bwy.InitTemplate()
+	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	//模板
+	//MyTemplate.ParseFiles("./views/archive.html", "./views/common/_header.html")
+	MyTemplate.ParseFiles("./views/list.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ExecuteTemplate(w, "list", rd)
 }
 
 //归档文章列表
@@ -133,8 +160,7 @@ func Post(w http.ResponseWriter,r *http.Request) {
 	}
 
 	MyTemplate := bwy.InitTemplate()
-	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	MyTemplate.ParseFiles("./views/post.html", "./views/common/_header.html")
+	MyTemplate.ParseFiles("./views/post.html", "./views/common/_header.html", "./views/common/_rside.html")
 	MyTemplate.ExecuteTemplate(w, "post", rd)
 
 	//MyTemplate := bwy.InitTemplate()
@@ -144,6 +170,7 @@ func Post(w http.ResponseWriter,r *http.Request) {
 
 }
 
+//关于页面
 
 
 

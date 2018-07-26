@@ -1,19 +1,23 @@
 {{ define "_rside" }}
 <div id="rside">
+    {{/*<aside>*/}}
+        {{/*<h4>归档</h4>*/}}
+        {{/*<ul>*/}}
+        {{/*{{ range . }}*/}}
+            {{/*<li class="line-limit-length"><a href="/archive/{{.created_at}}">{{.created_at}}</a><span>&nbsp;({{.cnt}})</span></li>*/}}
+        {{/*{{ else }}*/}}
+            {{/*<h4>数据查询失败</h4>*/}}
+        {{/*{{end}}*/}}
+        {{/*</ul>*/}}
+    {{/*</aside>*/}}
     <aside>
-        <form action="">
-            <input type="text" name="search" placeholder="Search...">
-        </form>
-    </aside>
-    <aside>
-        <h4>归档</h4>
+        <h4>分类</h4>
         <ul>
-            {{/*<b>2014</b>*/}}
-            {{ range . }}
-                <li class="line-limit-length"><a href="/archive/{{.created_at}}">{{.created_at}}</a><span>&nbsp;({{.cnt}})</span></li>
-            {{ else }}
+        {{ range . }}
+            <li class="line-limit-length"><a href="/type/{{.url}}">{{ .name }}</a></li>
+        {{ else }}
             <h4>数据查询失败</h4>
-            {{end}}
+        {{end}}
         </ul>
     </aside>
     <aside>
