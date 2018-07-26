@@ -240,3 +240,10 @@
     .line-limit-length-title {
         width: 500px; overflow: hidden; text-overflow:ellipsis;-o-text-overflow:ellipsis; white-space:nowrap;
     }
+
+    .white {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        background: white;
+        /*padding: 40px;*/
+    }

@@ -23,7 +23,6 @@ func LayoutType() []map[string]string {
 }
 
 
-
 func (ret *RetJson) Success(w http.ResponseWriter) {
 	retjson, _ := json.Marshal(ret)
 	fmt.Fprintf(w, string(retjson) )

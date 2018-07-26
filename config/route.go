@@ -25,4 +25,8 @@ func Route() {
 
 	//评论添加
 	bwy.RouteAny("^/comment/add/?$",controllers.CommentAdd)
+
+	//关于
+	bwy.RouteAny("^/about/?$",controllers.About)
+
 }

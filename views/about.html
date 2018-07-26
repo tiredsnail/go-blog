@@ -1,0 +1,115 @@
+{{ define "about" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{.Title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?time=1.1.9">
+</head>
+<body>
+{{template "_header"}}
+<div id="main">
+    <div id="lside">
+        <div class="white" >
+            <pre >
+                                      .;$$$
+                        ....:;$$$$$$$$   $$
+                    ..;;;$$$             $$:..
+                 .:$$$$$$                $$$$$$:.
+               .;$$$$$$$$3             $$$$$$$$$$;.
+             .;$$$$$$$$$$$$$   $$$$$$$$$;$$$$$$$$$$;.
+            ;$$$$$$$$$$$$$$$$   $$$;$$$$$$$$$$$$$$$$$$;
+           ;$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$$$$$
+          $$$$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$$$$$
+         :$$$$$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$$$$;
+        .$$$$$$$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$$$$.
+        :$$$$$$$$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$$$:
+        ;$$$$$$$$$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$$;
+        ;$$$$$$$$$$$$$$$$$$$$$$$$$$$   $$$$$$$$$$$$$$$$$$$;
+        :$$$$$$$$$$$$$$$$$$$             $$$$$$$$$$$$$$$$$:
+        .$$$$$$$$$$$$$$$$                 $$$$$$$$$$$$$$$.
+         ;$$$$$$$$$$$$$$                   $$$$$$$$$$$$$;
+          $$$$$$$$$$$$$                     $$$$$$$$$$$$
+           $$$$$$$$$$$                      $$$$$$$$$$$
+            ;$$$$$$$$$                     $$$$$$$$$$;
+             .$$$$$$$$$                   $$$$$$$$$$.
+               .$$$$$$$$$               $$$$$$$$$$:
+                 .;$$$$$$$$$          $$$$$$$$$;.
+                    .:$$$$$$$$$$$$$$$ $$$$$$$:.
+                        ...:;;;;;;;; :...
+
+                /**
+                * 我是一只大咸鱼
+                */
+                func parseComplexToken(token string, value []byte) interface{} {
+                    if value == nil {
+                        log.Warnf("Empty value")
+                        return complexToken{token, nil}
+                    }
+
+                    var v []map[string]string
+                    currentMap := make(map[string]string)
+
+                    matches := regexpSubfield.FindAll(value, -1)
+
+                    for _, sub := range matches {
+                        h, l := parseLine(sub)
+
+                        if _, contains := currentMap[string(h)]; contains {
+                            v = append(v, currentMap)
+                            currentMap = make(map[string]string)
+                        }
+
+                        currentMap[string(h)] = string(bytes.Trim(l, stringEmpty))
+                    }
+                    v = append(v, currentMap)
+
+                    return complexToken{token, v}
+                }
+            </pre>
+        </div>
+
+        <hr>
+    </div>
+
+    <div id="rside">
+    {{if .Nav}}
+        <aside>
+            <h4>分类</h4>
+            <ul>
+            {{ range .Nav }}
+                <li class="line-limit-length"><a href="/type/{{.url}}">{{ .name }}</a></li>
+            {{ else }}
+                <h4>数据查询失败</h4>
+            {{end}}
+            </ul>
+        </aside>
+    {{end}}
+    {{if .Archive}}
+        <aside>
+            <h4>归档</h4>
+            <ul>
+            {{/*<b>2014</b>*/}}
+            {{ range .Archive }}
+                <li class="line-limit-length"><a href="/archive/{{.created_at}}">{{.created_at}}</a><span>&nbsp;({{.cnt}})</span></li>
+            {{ else }}
+                <h4>数据查询失败</h4>
+            {{end}}
+            </ul>
+        </aside>
+    {{end}}
+        <aside>
+            <h4>公众号:</h4>
+            <img src="https://cdn1.baiwuya.cn/blog/assets/wxgzh.jpg" alt="" width="200px">
+        </aside>
+    </div>
+
+
+</div>
+<footer>
+    Copyright &copy; 2017-2018 Bai Wu Ya
+</footer>
+</body>
+</html>
+{{ end }}
