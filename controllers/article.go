@@ -73,29 +73,14 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 
 //归档页面
 func Archive(w http.ResponseWriter,r *http.Request) {
-	//接收参数
-	page := 1
-	req := strings.Split(r.URL.Path, "/")
-	if len(req) > 2 {
-		page ,_ = strconv.Atoi(req[2])
-		if page ==0 {page++}
-	}
-
-	//分页使用
-	URL_PATH = ""
-
 	rd := RetData{
-		Title: "白乌鸦 - 一个phper的博客",
-		Nav: LayoutType(),
-		ArticleList: models.ArticlePostList(page, 3,""),
+		Title: "归档 - 白乌鸦",
 		Archive: models.Archive(),
 	}
 	MyTemplate := bwy.InitTemplate()
-	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
 	//模板
-	//MyTemplate.ParseFiles("./views/archive.html", "./views/common/_header.html")
-	MyTemplate.ParseFiles("./views/list.html", "./views/common/_list.html", "./views/common/_nav.html")
-	MyTemplate.ExecuteTemplate(w, "list", rd)
+	MyTemplate.ParseFiles("./views/archive.html", "./views/common/_header.html")
+	MyTemplate.ExecuteTemplate(w, "archive", rd)
 }
 
 //归档文章列表
@@ -129,7 +114,7 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 	rd := RetData{
 		Title: "归档|"+created_at+" - 白乌鸦",
 		Description: "归档日期:"+created_at+" - 白乌鸦",
-		Nav: LayoutType(),
+		//Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"created_at>'"+strconv.Itoa(int(startTime))+"' and created_at<'"+strconv.Itoa(int(endTime))+"'"),
 		Archive: models.Archive(),
 	}
@@ -137,8 +122,8 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
 
 	//模板
-	MyTemplate.ParseFiles("./views/archive.html", "./views/common/_list.html", "./views/common/_nav.html")
-	MyTemplate.ExecuteTemplate(w, "archive", rd)
+	MyTemplate.ParseFiles("./views/list.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ExecuteTemplate(w, "list", rd)
 }
 
 //文章详情

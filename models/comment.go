@@ -50,7 +50,7 @@ func CommentList(page int,num int, article_id string) (*ArticleListData) {
 	//time.Sleep(3000000000)
 	ALD := ArticleListData{}
 	DB := db.Db{}
-	list,err := DB.Table("`blog_comment` a").Order("a.comment_id desc").Select("a.comment_id,a.nick,a.url,a.content,a.pid,a.created_at,b.nick as pnick,b.content as pcontent").Join("left join `blog_comment` b on a.pid = b.comment_id").Where("a.article_id=1").Limit(strconv.Itoa(((page-1)*num))+","+strconv.Itoa(num)).Get()
+	list,err := DB.Table("`blog_comment` a").Order("a.comment_id desc").Select("a.comment_id,a.nick,a.url,a.content,a.pid,a.created_at,b.nick as pnick,b.content as pcontent").Join("left join `blog_comment` b on a.pid = b.comment_id").Where("a.article_id="+article_id).Limit(strconv.Itoa(((page-1)*num))+","+strconv.Itoa(num)).Get()
 
 	//DB.MysqlConn().Conn.Query()
 
@@ -59,7 +59,7 @@ func CommentList(page int,num int, article_id string) (*ArticleListData) {
 	}
 	ALD.List = list
 
-	count, _ := DB.Table("blog_comment").Where("article_id=1").Count()
+	count, _ := DB.Table("blog_comment").Where("article_id="+article_id).Count()
 	ALD.CurrentPage = page
 	ALD.Page = int(math.Ceil(float64(count) / float64(num) ))
 
