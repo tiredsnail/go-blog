@@ -29,4 +29,14 @@ func Route() {
 	//关于
 	bwy.RouteAny("^/about/?$",controllers.About)
 
+	//后台
+	bwy.RouteAny("^/admin/login/?$",controllers.Admin_Login)							//登录
+	bwy.RouteAny("^/admin/?$",controllers.Admin_Index)								//首页
+
+	bwy.RouteAny("^/admin/article/?$",controllers.Admin_ArticleList)					//文章列表
+	bwy.RouteAny("^/admin/article/create/?$",controllers.Admin_ArticleCreate)		//文章添加|修改
+	bwy.RouteAny("^/admin/article/delete/?$",controllers.Admin_ArticleDelete)		//文章删除
+
+	bwy.RouteAny("^/admin/outlogin/?$",controllers.Admin_outLogin)					//退出登录
+
 }

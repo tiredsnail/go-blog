@@ -1,0 +1,32 @@
+{{ define "index" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css">
+    <style>
+        form {
+            width:30%;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>后台管理界面</h1>
+</header>
+<div id="main">
+    {{template "_admin_lside"}}
+    <div id="rside">
+        <div class="succ">成功</div>
+        <div class="danger">出错</div>
+    </div>
+</div>
+<footer>
+    Copyright &copy; 2015 · GeneratePress · WordPress
+</footer>
+</body>
+</html>
+{{ end }}

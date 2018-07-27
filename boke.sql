@@ -84,3 +84,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+
+select DATE_FORMAT(create_time, '%Y-%m') as create_time, count(*) as cnt from `th_order_merchants` group by DATE_FORMAT(create_time, '%Y-%m')

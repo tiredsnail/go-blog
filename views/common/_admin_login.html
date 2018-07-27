@@ -1,0 +1,15 @@
+{{ define "_admin_login" }}
+<div id="respond" class="comment-respond">
+    <form action="/admin/login" method="post">
+        {{.}}
+        <p>
+            <input placeholder="用户名" name="bwy_number" type="text" value="admin" size="30">
+        </p>
+        <p>
+            <input placeholder="密码" name="bwy_password" type="text" value="123456" size="30">
+        </p>
+        <input type="submit" value="登陆">
+        </p>
+    </form>
+</div>
+{{ end }}

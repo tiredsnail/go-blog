@@ -3,7 +3,7 @@
 <div id="lside">
     {{ range .List }}
         <article>
-            <h2 class="line-limit-length-title"><a href="/post/{{.article_id}}">{{.headline}}</a></h2>
+            <h3 class="line-limit-length-title"><a href="/post/{{.article_id}}">{{.headline}}</a></h3>
             <div class="entry_header">
                 <time>{{.updated_at | strtotime}}</time>
                 <a href="/type/{{.type_url}}">{{.type_name}}</a>

@@ -1,0 +1,30 @@
+{{ define "login" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?time=1.1.6">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/art.css?v=1.1.5">
+    <link rel="stylesheet" href="./css/art.css">
+    <style>
+        form {
+            width:30%;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>后台管理界面</h1>
+</header>
+<div id="main">
+    {{template "_admin_login" .Prompt}}
+</div>
+<footer>
+    Copyright &copy; 2015 · GeneratePress · WordPress
+</footer>
+</body>
+</html>
+{{ end }}

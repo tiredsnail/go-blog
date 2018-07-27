@@ -1,0 +1,76 @@
+{{ define "article_list" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css">
+    <style>
+        form {
+            width:30%;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>后台管理界面</h1>
+</header>
+<div id="main">
+{{template "_admin_lside"}}
+
+    <div id="rside">
+        <table>
+            <tr>
+                <td>序号</td>
+                <td>日期</td>
+                <td>标题</td>
+                <td>分类</td>
+                <td>回复</td>
+                <td>状态</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2013/12/03</td>
+                <td><a href="#">这是2013年的第一场雪</a></td>
+                <td>心情随笔</td>
+                <td><span class="badge">12</span></td>
+                <td>已发布</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2013/12/03</td>
+                <td><a href="#">这是2013年的第一场雪</a></td>
+                <td>心情随笔</td>
+                <td><span class="badge">15</span></td>
+                <td>已发布</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>2013/12/03</td>
+                <td><a href="#">这是2013年的第一场雪</a></td>
+                <td>心情随笔</td>
+                <td><span class="badge">9</span></td>
+                <td>已发布</td>
+            </tr>
+        </table>
+        <div id="pagebar">
+            Pages:&nbsp;
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            4
+            <a href="#">5</a>
+            <a href="#">6</a>
+        </div>
+
+    </div>
+
+</div>
+<footer>
+    Copyright &copy; 2015 · GeneratePress · WordPress
+</footer>
+</body>
+</html>
+{{ end }}
