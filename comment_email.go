@@ -1,10 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"net/smtp"
 	"strings"
+	"net/http"
+	"flag"
+	"www/engine"
+	"www/bwy/db"
+	"fmt"
 	"time"
+	"strconv"
 )
 
 func SendToMail(user, password, host, to, subject, body, mailtype string, nick string) error {
@@ -24,57 +29,80 @@ func SendToMail(user, password, host, to, subject, body, mailtype string, nick s
 }
 
 func main() {
+	ConfPath := flag.String("cpath", "/Users/wangzhigang/go/src/www/config.conf", "config file")
+	engine.Inits(*ConfPath)
+	//list,err := DB.Table("blog_comment_email").Select("*").Limit("1,50").Where("state=0").Get()
+	//
+	//fmt.Println(list)
+	//fmt.Println(err)
+
+	user := "erppcc@163.com"
+	password := "erppcc163mm"
+	host := "smtp.163.com:25"
+	//
+	//user := "admin@baiwuya.cn"
+	//password := "erppccyx11."
+	//host := "smtp.mxhichina.com:25"
+	nick := "白乌鸦"
+	subject := "BaiWy 评论回复通知 ... "
 	//如果没有任务 10 秒读取一次数据库 , 判断任务数量 , 并发处理. 最多3并发 . 300数据
 	// email
 	ticker := time.NewTicker(time.Second * 10)		//10秒执行一次
 	go func() { //协程
 		for {
 			//查询是否有任务
-			//code ...
-			// ....
-			if true {
-				// code ...
-				// ...
+			DB := db.Db{}
+			list,err := DB.Table("blog_comment_email").Select("comment_email_id,email,content,error_num").Limit("1,50").Where("state=0").Get()
+			if err != nil {
+				<-ticker.C		//10秒执行一次
+				continue
+			}
+			fmt.Println(time.Now().Unix())
+			if len(list) > 0 {
+				for _,v := range list {
+					emailerr := SendToMail(user, password, host, v["email"], subject, v["content"], "html", nick)
+					if emailerr != nil {
+						//DB := db.Db{}
+						//DB.MysqlConnect()	//取sql连接
+						stmt, err := db.MysqlConn.Prepare("UPDATE blog_comment_email set state=?, error_num=?, error_msg=?, start_time=? WHERE comment_email_id=?")
+						if err != nil {
+							continue
+						}
+						error_num,_ := strconv.Atoi(v["error_num"])
+						_, err = stmt.Exec(2, error_num+1, emailerr.Error(), time.Now().Unix(), v["comment_email_id"] )
+						if err != nil {
+							continue
+						}
+						//num, err := res.RowsAffected()
+						//if err != nil {
+						//	continue
+						//}
+						stmt.Close()
+					} else {
+						stmt, err := db.MysqlConn.Prepare("UPDATE blog_comment_email set state=?, start_time=? WHERE comment_email_id=?")
+						if err != nil {
+							continue
+						}
+						res, err := stmt.Exec(1, time.Now().Unix(), v["comment_email_id"])
+						if err != nil {
+							continue
+						}
+						num, err := res.RowsAffected()
+						fmt.Println("Send success",v["email"],num)
+
+					}
+				}
 			} else { //没有 等待10秒
 				<-ticker.C		//10秒执行一次
 			}
 
 		}
 	}()
-	//user := "erppcc@163.com"
-	//password := "erppcc163mm"
-	//host := "smtp.163.com:25"
 
-	user := "admin@baiwuya.cn"
-	password := "erppccyx11."
-	host := "smtp.mxhichina.com:25"
-	nick := "白乌鸦"
 
-	to := "erppcc@163.com"
+	http.HandleFunc("/monitor", func(writer http.ResponseWriter, request *http.Request) {
 
-	subject := "GoLang 系统通知 ... "
+	})
 
-	body := `
-		<html>
-		<body>
-		<h3>
-		你在【白乌鸦】网站中的评论有人回复了 ,
-		</h3>
-		<p>点击查看完整内容:<a href="https://www.baiwuya.cn">https://www.baiwuya.cn/post/1</a></p>
-		<b>评论内容 :</b>
-		<p><xmp><p>一到晚上就睡不着 . 敲代码敲到2点多.我的情况还有的救吗? ...</p></xmp></p>
-		<b>回复内容 :</b>
-		<xmp><p>你的情况比较严重 . 多半是没得救了 ...</p></xmp>
-		</body>
-		</html>
-		`
-	fmt.Println("send email")
-	err := SendToMail(user, password, host, to, subject, body, "html",nick)
-	if err != nil {
-		fmt.Println("Send mail error!")
-		fmt.Println(err)
-	} else {
-		fmt.Println("Send mail success!")
-	}
-
+	http.ListenAndServe(":14315", nil)
 }

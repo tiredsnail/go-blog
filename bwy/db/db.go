@@ -93,7 +93,7 @@ func (DB *Db) Get() ([]map[string]string,error) {
 	//查询多条
 	select_rows,err := MysqlConn.Query(select_sql)
 	if err != nil {
-		bwy.MyLog("MySql错误:...bwy/db/db.go line 91 [error:"+err.Error()+"]")
+		bwy.MyLog("MySql错误:...bwy/db/db.go line 95 [error:"+err.Error()+"]")
 		return data,err
 	}
 	for select_rows.Next() {

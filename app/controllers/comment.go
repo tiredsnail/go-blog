@@ -8,6 +8,7 @@ import (
 	"time"
 	"strconv"
 	"www/bwy"
+	"www/bwy/db"
 )
 
 func CommentAdd(w http.ResponseWriter,r *http.Request) {
@@ -68,19 +69,14 @@ func CommentAdd(w http.ResponseWriter,r *http.Request) {
 	//判断是否是回复
 	if data.Pid != "" {
 		//查询接收人邮件
-		pdata := models.CommentFirst("1","email,content")
+		pdata := models.CommentFirst(data.Pid,"email,content")
 
 		//加入回复任务队列 - 数据库
 		commentEmailQueue := make(map[string]string)
 		commentEmailQueue["comment_id"] = strconv.Itoa(int(resdb))
 		commentEmailQueue["email"] = pdata["email"]
 		commentEmailQueue["created_at"] = data.Created_at
-		commentEmailQueue["connent"] = `
-		<html>
-		<body>
-		<h3>
-		你在【白乌鸦】网站中的评论有人回复了 ,
-		</h3>
+		commentEmailQueue["content"] = `<html><body><h3>你在【白乌鸦】网站中的评论有人回复了 ,</h3>
 		<p>点击查看完整内容:<a href="https://www.baiwuya.cn">https://www.baiwuya.cn/post/`+data.Article_id+`</a></p>
 		<b>你的评论内容 :</b>
 		<p><xmp>`+pdata["content"]+`</xmp></p>
@@ -92,7 +88,7 @@ func CommentAdd(w http.ResponseWriter,r *http.Request) {
 		fmt.Println(commentEmailQueue)
 		_ ,err = models.CommentEmailQueuePut(commentEmailQueue)
 		if err != nil {
-			bwy.MyLog("加入任务队列失败,comment_id:"+commentEmailQueue["comment_id"])
+			bwy.MyLog("加入评论回复任务队列失败["+err.Error()+"],comment_id:"+commentEmailQueue["comment_id"])
 		}
 	}
 
@@ -123,6 +119,11 @@ func CommentList(w http.ResponseWriter,r *http.Request) {
 
 
 func Tests(w http.ResponseWriter,r *http.Request) {
-	data := models.CommentFirst("1","email,content")
-	fmt.Println(data["email"])
+	DB := db.Db{}
+	DB.MysqlConnect()
+	list,err := DB.Table("blog_comment_email").Select("*").Limit("1,50").Where("state=0").Get()
+	//list,err := DB.Table("blog_article").Select("*").Where("state=0").Order("state asc").Limit("1,10").Get()
+
+	fmt.Println(list)
+	fmt.Println(err)
 }
