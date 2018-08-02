@@ -121,7 +121,7 @@ func (DB *Db) Get() ([]map[string]string,error) {
 }
 
 //查询单条
-func (DB *Db) First() (data map[string]string) {
+func (DB *Db) First(selects string) (data map[string]string) {
 
 	return data
 }

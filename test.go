@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func SendToMail(user, password, host, to, subject, body, mailtype string, nick string) error {
+func SendToMails(user, password, host, to, subject, body, mailtype string, nick string) error {
 	hp := strings.Split(host, ":")
 	auth := smtp.PlainAuth("", user, password, hp[0])
 	var content_type string

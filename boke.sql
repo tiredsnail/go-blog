@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `blog_comment` (
   `superior` varchar(20) DEFAULT ''  COLLATE utf8_unicode_ci comment '父级(回复)昵称',
   `ip` varchar(20) unsigned NOT NULL DEFAULT '0',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `state` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0-隐藏 1-显示',
   PRIMARY KEY (`comment_id`),
   KEY `article_id` (`article_id`),
   KEY `ip` (`ip`),
@@ -69,6 +70,20 @@ CREATE TABLE IF NOT EXISTS `blog_comment` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+-- 邮件发送表
+CREATE TABLE IF NOT EXISTS `blog_comment_email` (
+  `comment_email_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `comment_id` int(10) NOT NULL comment '评论id',
+  `email` char(50) NOT NULL comment '发送邮箱',
+  `connent` char(50) NOT NULL comment '发送内容',
+  `state` tinyint(1) DEFAULT 0 comment '0-未发送,1-发送成功,2-发送失败',
+  `error_num` int(1) DEFAULT 0 comment '失败次数',
+  `error_msg` char(100) DEFAULT "" comment '失败原因',
+  `start_time` int(10) unsigned DEFAULT '0' comment '发送时间',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`comment_email_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
 -- 表的结构 `user`

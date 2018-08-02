@@ -226,7 +226,9 @@
                 return
             }
             if (document.getElementById("bwy_url").value == 'http://') {
-                var url=""
+                var url = ""
+            } else {
+                var url = document.getElementById("bwy_url").value
             }
             //判断是否有回复
             var pid = document.getElementById("pid").value

@@ -1,0 +1,95 @@
+{{ define "article_create" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css?v=1.1.1">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css?v=1.1.1">
+    <style>
+        form {
+            width:30%;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>后台管理界面</h1>
+</header>
+<div id="main">
+{{template "_admin_lside"}}
+
+    <div id="rside">
+        <form action="/admin/article/create_button" method="post" style="width: 100%">
+            <div class="form-group">
+                <label>标题:</label>
+                <p>
+                    <input type="text" name="headline" value="{{if .Article}}{{.Article.Headline}}{{end}}">
+                </p>
+            </div>
+            <div class="form-group">
+                <label>栏目:</label>
+                <p>
+                    <select name="type_url">
+                        {{ range .LayoutType }}
+                            <option value="{{.url}}">{{ .name }}</option>
+                        {{end}}
+                    </select>
+                </p>
+            </div>
+            <div class="form-group">
+                <label>状态:</label>
+                <p>
+                    <select name="state">
+                        <option value="0">隐藏</option>
+                        <option value="1">显示</option>
+                    </select>
+                </p>
+            </div>
+            <div class="form-group">
+                <label>摘要:</label>
+                <p>
+                    <textarea name="summary">{{if .Article}}{{.Article.Summary}}{{end}}</textarea>
+                </p>
+            </div>
+            <div class="form-group">
+                <label>内容:</label>
+                <p><textarea id="text" name="content" style="display: none;"></textarea></p>
+            </div>
+            <div id="editor">{{if .Article}}{{.Article.Content | unescaped}}{{end}}</div>
+
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <p>
+                    <input type="hidden" name="article_id" value="{{if .Article}}{{.Article.Article_id}}{{end}}">
+                    <button type="submit">提交</button>
+                </p>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+<footer>
+    Copyright &copy; 2015 · GeneratePress · WordPress
+</footer>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript" src="http://127.0.0.1:81/static/wangEditor/release/wangEditor.js"></script>
+<script type="text/javascript">
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    var text = $('#text')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    //粘贴过滤图片
+    editor.customConfig.pasteIgnoreImg = true
+    editor.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        text.val(html)
+    }
+    editor.create()
+</script>
+</body>
+</html>
+{{ end }}

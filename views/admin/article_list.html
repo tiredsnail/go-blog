@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>{{.Title}}</title>
     <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css">
+    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css?v=1.1.1">
     <style>
         form {
             width:30%;
@@ -27,42 +27,30 @@
                 <td>日期</td>
                 <td>标题</td>
                 <td>分类</td>
-                <td>回复</td>
                 <td>状态</td>
+                <td>操作</td>
             </tr>
+{{ range .ArticlePageData.List }}
             <tr>
-                <td>1</td>
-                <td>2013/12/03</td>
-                <td><a href="#">这是2013年的第一场雪</a></td>
-                <td>心情随笔</td>
-                <td><span class="badge">12</span></td>
-                <td>已发布</td>
+                <td>{{.article_id}}</td>
+                <td>{{.created_at | strtotime}}</td>
+                <td style="width: 200px;"><a href="#">{{.headline}}</a></td>
+                <td>{{.type_name}}</td>
+                <td>
+                {{.state}}
+                </td>
+                <td>
+                    <a href="/admin/article/create?article_id={{.article_id}}">修改</a>
+                    <a href="/admin/article/delete?article_id={{.article_id}}">删除</a>
+                </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>2013/12/03</td>
-                <td><a href="#">这是2013年的第一场雪</a></td>
-                <td>心情随笔</td>
-                <td><span class="badge">15</span></td>
-                <td>已发布</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>2013/12/03</td>
-                <td><a href="#">这是2013年的第一场雪</a></td>
-                <td>心情随笔</td>
-                <td><span class="badge">9</span></td>
-                <td>已发布</td>
-            </tr>
+{{end}}
         </table>
-        <div id="pagebar">
-            Pages:&nbsp;
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            4
-            <a href="#">5</a>
-            <a href="#">6</a>
+        <div class="pagebar">
+            Pages({{.ArticleList.Page}})
+            <ul class="pagination">
+            {{mypages .ArticleList.Page .ArticleList.CurrentPage }}
+            </ul>
         </div>
 
     </div>

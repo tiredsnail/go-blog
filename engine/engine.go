@@ -20,3 +20,4 @@ func Inits(ConfPath string) {
 	myConfig := new(bc.Config)
 	myConfig.InitConfig(ConfPath)
 }
+
