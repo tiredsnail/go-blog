@@ -17,7 +17,7 @@ func LayoutType() []map[string]string {
 		{"name":"GoLang","url":"golang"},
 		{"name":"Mysql","url":"mysql"},
 		{"name":"PHP","url":"php"},
-		{"name":"TrashCan","url":"trashcan"},
+		{"name":"other","url":"other"},
 	}
 	return data
 }

@@ -17,7 +17,7 @@ type RetData struct {
 	Nav			[]map[string]string
 	ArticleList	*models.PageData
 	Archive		[]map[string]string
-	ArticleData *models.ArticleData
+	ArticleData map[string]string
 }
 var URL_PATH string
 func Index(w http.ResponseWriter,r *http.Request) {
@@ -129,24 +129,17 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 //文章详情
 func Post(w http.ResponseWriter,r *http.Request) {
 	//接收参数
-	var article_id string
 	req := strings.Split(r.URL.Path, "/")
-	if len(req) > 2 {
-		article_id = req[2]
 
-	}
-
-	rd := RetData{
+	rd := &RetData {
 		Title: "白乌鸦",
 		Nav: LayoutType(),
-		//ArticleList: models.ArticlePostList(1,5,""),
-		ArticleData: models.ArticlePost(article_id),
-		//Archive: models.Archive(),
+		ArticleData: models.ArticlePosts(req[2]),
 	}
 
 	MyTemplate := bwy.InitTemplate()
 	MyTemplate.ParseFiles("./views/post.html", "./views/common/_header.html", "./views/common/_rside.html")
-	MyTemplate.ExecuteTemplate(w, "post", rd)
+	MyTemplate.ExecuteTemplate(w, "post", &rd)
 
 	//MyTemplate := bwy.InitTemplate()
 	//MyTemplate.Funcs(template.FuncMap{"mypages": mypages})

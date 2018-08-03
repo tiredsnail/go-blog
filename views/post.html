@@ -16,15 +16,15 @@
     <div id="lside">
 {{ with .ArticleData }}
         <article>
-            <h3>{{.Headline}}</h3>
+            <h3>{{.headline}}</h3>
             <div class="entry_header">
-                <time>{{.Updated_at | strtotime}}</time>
-                <a href="/{{.Type_name}}">{{.Type_name}}</a>
-                <span>{{.Comm}}条评论</span>
-                <span>{{.Pv}}人浏览</span>
+                <time>{{.updated_at | strtotime}}</time>
+                <a href="/{{.type_name}}">{{.Type_name}}</a>
+                <span>{{.comm}}条评论</span>
+                <span>{{.pv}}人浏览</span>
             </div>
             <div class="content">
-                {{.Content | unescaped}}
+                {{.content | unescaped}}
             </div>
         </article>
 {{end}}
@@ -101,7 +101,7 @@
             //需要POST的值，把每个变量都通过&来联接
 
             var postStr = 'page='+page+
-                        '&article_id={{.ArticleData.Article_id}}';
+                        '&article_id={{.ArticleData.article_id}}';
             xmlhttp.open("POST","/comment/list/",true);
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlhttp.send(postStr);
@@ -239,8 +239,8 @@
                     '&bwy_email='+ document.getElementById("bwy_email").value+
                     '&bwy_url='+url+pid+
                     '&bwy_comment='+ document.getElementById("bwy_comment").value+
-                    '&article_id={{.ArticleData.Article_id}}';
-            xmlhttp.open("POST","/comment/add/?article_id={{.ArticleData.Article_id}}",true);
+                    '&article_id={{.ArticleData.article_id}}';
+            xmlhttp.open("POST","/comment/add/?article_id={{.ArticleData.article_id}}",true);
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xmlhttp.send(postStr);
         }

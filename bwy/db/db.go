@@ -5,6 +5,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"www/bwy/config"
 	"www/bwy"
+	"strings"
+	"log"
 )
 var MysqlConn	 	*sql.DB
 type Db struct {
@@ -26,8 +28,8 @@ type Db struct {
 func (DB *Db) MysqlConnect() *Db {
 	if MysqlConn == nil {
 		MysqlConn, _ = sql.Open("mysql", config.CONFIG["database|mysqlUser"]+":"+config.CONFIG["database|mysqlPwd"]+"@tcp("+config.CONFIG["database|mysqlHost"]+":"+config.CONFIG["database|mysqlPort"]+")/"+config.CONFIG["database|mysqlDatabase"])
-		MysqlConn.SetMaxOpenConns(400)		//最大连接数
-		MysqlConn.SetMaxIdleConns(200)		//空闲连接数
+		MysqlConn.SetMaxOpenConns(100)		//最大连接数
+		MysqlConn.SetMaxIdleConns(50)		//空闲连接数
 	}
 	//MysqlConn.Ping()
 	return DB
@@ -122,8 +124,34 @@ func (DB *Db) Get() ([]map[string]string,error) {
 
 //查询单条
 func (DB *Db) First(selects string) (data map[string]string) {
+	select_sql := "SELECT "+selects+" FROM "+DB.tables
+	if DB.wheres != "" {
+		select_sql += DB.wheres
+	}
 
-	return data
+	columns := strings.Split(selects,",")
+	scanArgs := make([]interface{}, len(columns))
+	values := make([]interface{}, len(columns))
+
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+	select_err := MysqlConn.QueryRow(select_sql).Scan(scanArgs...)
+	//将数据保存到 record 字典
+	record := make(map[string]string)
+	for i, col := range values {
+		if col != nil {
+			record[columns[i]] = string(col.([]byte))
+		}
+	}
+
+	if select_err != nil { //如果没有查询到任何数据就进入if中err：no rows in result set
+		log.Println(select_err)
+		return record
+	}
+
+	//log.Println(data)
+	return record
 }
 
 //删除

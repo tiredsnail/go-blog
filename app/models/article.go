@@ -85,29 +85,34 @@ type ArticleData struct {
 	Comm string
 	Pv string
 }
-func ArticlePost(id string)  *ArticleData {
+func ArticlePost(id string) (data *ArticleData) {
 	DB := db.Db{}
 	DB.MysqlConnect()
 	select_sql := "SELECT `article_id`,`type_name`,`headline`,`content`,`updated_at`,`comm`,`pv` FROM `blog_article` WHERE article_id="+id
 
 	//fmt.Println(select_sql)
 	//DB.MysqlConn().Conn.QueryRow(select_sql)
-	data := ArticleData{}
 	select_err :=db.MysqlConn.QueryRow(select_sql).Scan(
-		&data.Article_id,
-		&data.Type_name,
-		&data.Headline,
-		&data.Content,
-		&data.Updated_at,
-		&data.Comm,
-		&data.Pv,
+		data.Article_id,
+		data.Type_name,
+		data.Headline,
+		data.Content,
+		data.Updated_at,
+		data.Comm,
+		data.Pv,
 		)
 
 	if select_err != nil { //如果没有查询到任何数据就进入if中err：no rows in result set
 		log.Println(select_err)
-		return &data
+		return data
 	}
 	//log.Println(data)
-	return &data
+	return data
 }
 
+func ArticlePosts(id string) map[string]string {
+
+	DB := db.Db{}
+	data := DB.Table("blog_article").Where("article_id="+id).First("article_id,type_name,headline,content,updated_at,comm,pv")
+	return data
+}
