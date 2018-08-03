@@ -4,15 +4,14 @@ import (
 	"net/http"
 	"www/engine"
 	"flag"
-	 _ "net/http/pprof" // pprof 的 http 路由注册在自带路由上
+	 //_ "net/http/pprof" // pprof 的 http 路由注册在自带路由上
 )
 
 
 func main() {
-	go func() {
-		http.ListenAndServe("0.0.0.0:6060", nil) // 启动默认的 http 服务，可以使用自带的路由
-	}()
-
+	//go func() {
+	//	http.ListenAndServe("0.0.0.0:6060", nil) // 启动默认的 http 服务，可以使用自带的路由
+	//}()
 
 	ConfPath := flag.String("cpath", "/Users/wangzhigang/go/src/www/config.conf", "config file")
 

@@ -85,7 +85,6 @@ func CommentAdd(w http.ResponseWriter,r *http.Request) {
 		</body>
 		</html>
 		`
-		fmt.Println(commentEmailQueue)
 		_ ,err = models.CommentEmailQueuePut(commentEmailQueue)
 		if err != nil {
 			bwy.MyLog("加入评论回复任务队列失败["+err.Error()+"],comment_id:"+commentEmailQueue["comment_id"])

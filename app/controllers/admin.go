@@ -31,23 +31,12 @@ type checkloginstruct struct {
 var checklogindata checkloginstruct
 func checklogin(w http.ResponseWriter,r *http.Request) (errs error) {
 	cookie, err := r.Cookie("checklogindata")
-	//fmt.Println("cookie:",cookie.Value)
-	//fmt.Println("checklogindata:",checklogindata)
 
 	if err != nil {
-		//fmt.Fprintln(w, "Domain:", cookie.Domain)
-		//fmt.Fprintln(w, "Expires:", cookie.Expires)
-		//fmt.Fprintln(w, "Name:", cookie.Name)
-		//fmt.Fprintln(w, "Value:", cookie.Value)
 		//返回登录页面
-
-		//panic(fmt.Sprintf("invalid suit %v"))
 		return errors.New("cookie读取失败")
-
 	}
-	//if checklogindata == nil {
-	//	return errors.New("token不存在")
-	//}
+
 	//查找
 	if checklogindata.Token != cookie.Value || cookie.Value == ""{
 		return errors.New("token不匹配")
@@ -105,7 +94,6 @@ func Admin_Login(w http.ResponseWriter,r *http.Request) {
 //首页
 func Admin_Index(w http.ResponseWriter,r *http.Request) {
 	if err := checklogin(w ,r); err != nil {
-		fmt.Println(err)
 		w.Header().Set("Location", "/admin/login")
 		w.WriteHeader(302)
 		return
@@ -177,15 +165,12 @@ func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
 			data.Type_name = types[i]["name"];
 		}
 	}
-	fmt.Println(data)
 	rd := AdminData{
 		Title: "文章(添加|修改) - 后台管理",
 	}
 	//判断 - 修改|添加
 	var err error
-	fmt.Println(r.PostFormValue("article_id"))
 	if r.PostFormValue("article_id") != "" { //修改
-		fmt.Println("修改进入")
 		rd.LayoutType = LayoutType()
 		data.Article_id = r.PostFormValue("article_id")
 		err = models.ArticleUpdate(&data)

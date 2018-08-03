@@ -1,15 +1,16 @@
 
     body {
-        background: #EFEFEF;
+        /*background: #ffffff;*/
+        /*#EFEFEF;*/
 		font-size:14px;
     }
 
-	a {
-		color:#1e73be;
-	}
+	/*a {*/
+		/*color:#1e73be;*/
+	/*}*/
 
     header{
-        background: white;
+        background: #EFEFEF;;
         height: 156px;
         padding: 40px 0px;
         box-sizing:border-box;
@@ -53,7 +54,7 @@
         display: block;
         padding: 0 20px;
         line-height: 60px;
-        color: white;
+        color: #EFEFEF;;
         font-size: 17px;
         font-family: '新宋体','宋体',serif;
     }
@@ -89,7 +90,7 @@
     }
 
     aside {
-        background: white;
+        background: #EFEFEF;;
         padding: 40px;
         margin-bottom: 20px;
     }
@@ -151,16 +152,16 @@
         color: black;
     }
 
-	table {
-		width:100%;
-	}
+	/*table {*/
+		/*width:100%;*/
+	/*}*/
 
-	tr {
-		border-bottom:1px solid gray;
-	}
-	td {
-		padding:5px 0;
-	}
+	/*tr {*/
+		/*border-bottom:1px solid gray;*/
+	/*}*/
+	/*td {*/
+		/*padding:5px 0;*/
+	/*}*/
 
 .form-group {
 margin:10px 0;

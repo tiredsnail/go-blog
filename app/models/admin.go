@@ -2,7 +2,6 @@ package models
 
 import (
 	"www/bwy/db"
-	"fmt"
 	"log"
 )
 
@@ -24,12 +23,10 @@ func ArticleInsert(data *ArticleTable) (int64 ,error) {
 	DB.MysqlConnect()	//取sql连接
 	stmt, err := db.MysqlConn.Prepare(`INSERT blog_article (headline, type_url, type_name, state, summary, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
 	if err != nil {
-		fmt.Println("文章添加失败:Prepare")
 		return 0,err
 	}
 	rows, err := stmt.Exec(&data.Headline,&data.Type_url,&data.Type_name,&data.State,&data.Summary,&data.Content,&data.Created_at,&data.Updated_at)
 	if err != nil {
-		fmt.Println("文章添加失败:Exec")
 		return 0,err
 	}
 	article_id,err := rows.LastInsertId()
@@ -47,12 +44,11 @@ func ArticleUpdate(data *ArticleTable) (error) {
 	if err != nil {
 		return err
 	}
-	num, err := res.RowsAffected()
+	_, err = res.RowsAffected()
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(num)
 	stmt.Close()
 	return nil
 }
@@ -84,8 +80,6 @@ func ArticleGetFind(article_id string) *ArticleTable {
 	DB.MysqlConnect()
 	select_sql := "SELECT `article_id`,`type_url`,`headline`,`content`,`state`,`summary` FROM `blog_article` WHERE article_id="+article_id
 
-	//fmt.Println(select_sql)
-	//DB.MysqlConn().Conn.QueryRow(select_sql)
 	data := ArticleTable{}
 	select_err :=db.MysqlConn.QueryRow(select_sql).Scan(
 		&data.Article_id,

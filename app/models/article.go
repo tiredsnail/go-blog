@@ -90,8 +90,6 @@ func ArticlePost(id string) (data *ArticleData) {
 	DB.MysqlConnect()
 	select_sql := "SELECT `article_id`,`type_name`,`headline`,`content`,`updated_at`,`comm`,`pv` FROM `blog_article` WHERE article_id="+id
 
-	//fmt.Println(select_sql)
-	//DB.MysqlConn().Conn.QueryRow(select_sql)
 	select_err :=db.MysqlConn.QueryRow(select_sql).Scan(
 		data.Article_id,
 		data.Type_name,
