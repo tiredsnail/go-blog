@@ -1,24 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"www/engine"
 	"flag"
+
 )
 
 
 func main() {
-	//配置文件
 	ConfPath := flag.String("cpath", "/Users/wangzhigang/go/src/www/config.conf", "config file")
+
+	//配置文件
+	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//ConfPath := flag.String("cpath", dir+"/config.conf", "config file")
 	engine.Inits(*ConfPath)
 
 	static()	//静态文件处理
 	http.HandleFunc("/", engine.Engine)
-	err := http.ListenAndServe("0.0.0.0:8880", nil)
-	if err != nil {
-		fmt.Println("http listen failed")
-	}
+	http.ListenAndServe("0.0.0.0:8880", nil)
 }
 
 
