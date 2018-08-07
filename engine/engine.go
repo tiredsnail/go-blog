@@ -1,9 +1,9 @@
 package engine
 import (
 	"net/http"
-	"www/bwy"
-	bc "www/bwy/config"
-	"www/config"
+	"go-blog/bwy"
+	bc "go-blog/bwy/config"
+	"go-blog/config"
 )
 func Engine(w http.ResponseWriter,r *http.Request) {
 	//常量定义

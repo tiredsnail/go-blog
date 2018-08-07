@@ -3,12 +3,12 @@ package controllers
 import (
 	"net/http"
 	"fmt"
-	"www/app/models"
+	"go-blog/app/models"
 	"strings"
 	"time"
 	"strconv"
-	"www/bwy"
-	"www/bwy/db"
+	"go-blog/bwy"
+	"go-blog/bwy/db"
 )
 
 func CommentAdd(w http.ResponseWriter,r *http.Request) {

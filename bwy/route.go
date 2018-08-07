@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"regexp"
 	"html/template"
-	"www/bwy/config"
 )
 type www struct {
 	match string
@@ -18,6 +17,12 @@ func RouteAny(pattern string, handler func(http.ResponseWriter, *http.Request)) 
 }
 
 func Match(w *http.ResponseWriter,r *http.Request) {
+	if r.URL.Path == "/favicon.ico" {
+		//t, _ :=template.ParseFiles("./views/static/favicon.ico")
+		//t.Execute(*w, t)
+		return
+	}
+
 	for i:=0; i<len(route); i++ {
 		regexps := regexp.MustCompile("("+route[i].match+")");
 		matchs := regexps.FindSubmatch([]byte(r.URL.Path))
@@ -28,7 +33,7 @@ func Match(w *http.ResponseWriter,r *http.Request) {
 	}
 
 	//w.WriteHeader(404)
-	t, _ :=template.ParseFiles(config.CONFIG["init|homePath"]+"views/common/_404.html")
+	t, _ :=template.ParseFiles("./views/common/_404.html")
 	t.Execute(*w, t)
 
 }

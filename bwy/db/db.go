@@ -3,8 +3,8 @@ package db
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"www/bwy/config"
-	"www/bwy"
+	"go-blog/bwy/config"
+	"go-blog/bwy"
 	"strings"
 	"log"
 )

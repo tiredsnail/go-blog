@@ -1,10 +1,10 @@
 package models
 
 import (
-	"www/bwy/db"
+	"go-blog/bwy/db"
 	"strconv"
 	"math"
-	"www/bwy"
+	"go-blog/bwy"
 	"log"
 	"strings"
 )

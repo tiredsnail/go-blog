@@ -182,14 +182,15 @@ margin-right:20px;
 }
 
 .form-group p {
-float:left;
+    margin-top: 0px;
+    float:left;
 width:75%;
 }
 
 input {
 	width:90%;
 	height:25px;
-	font:14px/22px;
+	/*font:14px/22px;*/
 	margin-bottom: 10px;
 	background: #FAFAFA;
 	color:#666;

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"www/bwy/db"
+	"go-blog/bwy/db"
 	"log"
 )
 

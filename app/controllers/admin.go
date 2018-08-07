@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"net/http"
-	"www/bwy"
+	"go-blog/bwy"
 	"errors"
 	"io"
 	"crypto/rand"
@@ -10,7 +10,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"time"
-	"www/app/models"
+	"go-blog/app/models"
 	"strings"
 	"strconv"
 	"html/template"

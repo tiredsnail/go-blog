@@ -1,8 +1,8 @@
 package config
 
 import (
-	"www/bwy"
-	"www/app/controllers"
+	"go-blog/bwy"
+	"go-blog/app/controllers"
 )
 
 func Route() {

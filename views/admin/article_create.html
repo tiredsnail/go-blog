@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{{.Title}}</title>
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css?v=1.1.12">
+    <link rel="stylesheet" href="/static/css/adm.css?1123123">
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    {{/*<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">*/}}
+    {{/*<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>*/}}
+    {{/*<script>hljs.initHighlightingOnLoad();</script>*/}}
     <style>
         form {
             width:30%;
@@ -35,6 +35,9 @@
                 <label>栏目:</label>
                 <p>
                     <select name="type_url">
+                    {{if .Article}}selected
+                        <option value="{{.Article.Type_url}}">{{ .Article.Type_url }}</option>
+                    {{end}}
                         {{ range .LayoutType }}
                             <option value="{{.url}}">{{ .name }}</option>
                         {{end}}

@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"www/bwy"
-	"www/app/models"
+	"go-blog/bwy"
+	"go-blog/app/models"
 )
 
 func About(w http.ResponseWriter,r *http.Request) {

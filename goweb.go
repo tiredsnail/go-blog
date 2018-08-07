@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"www/engine"
+	"go-blog/engine"
 
 	"flag"
 )
@@ -13,7 +13,7 @@ func main() {
 	//	http.ListenAndServe("0.0.0.0:6060", nil) // 启动默认的 http 服务，可以使用自带的路由
 	//}()
 
-	ConfPath := flag.String("cpath", "/Users/wangzhigang/go/src/www/config.conf", "config file")
+	ConfPath := flag.String("cpath", "/Users/wangzhigang/go/src/go-blog/config.conf", "config file")
 
 	//配置文件
 	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))

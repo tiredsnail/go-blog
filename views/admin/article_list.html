@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{.Title}}</title>
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css?v=1.1.1">
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <link rel="stylesheet" href="/static/css/adm.css">
     <style>
         form {
             width:30%;
@@ -47,9 +47,9 @@
 {{end}}
         </table>
         <div class="pagebar">
-            Pages({{.ArticleList.Page}})
+            Pages({{.ArticlePageData.Page}})
             <ul class="pagination">
-            {{mypages .ArticleList.Page .ArticleList.CurrentPage }}
+            {{mypages .ArticlePageData.Page .ArticlePageData.CurrentPage }}
             </ul>
         </div>
 

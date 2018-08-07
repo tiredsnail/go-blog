@@ -2,10 +2,10 @@ package models
 
 import (
 	"math"
-	"www/bwy/db"
+	"go-blog/bwy/db"
 	"strconv"
 	"log"
-	"www/bwy"
+	"go-blog/bwy"
 )
 
 type ArticleStructure struct {

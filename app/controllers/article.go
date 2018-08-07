@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 	"html/template"
-	"www/bwy"
+	"go-blog/bwy"
 	"fmt"
-	"www/app/models"
+	"go-blog/app/models"
 	"strconv"
 	"strings"
 	"time"

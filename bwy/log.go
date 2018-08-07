@@ -4,7 +4,7 @@ import (
 	"os"
 	"fmt"
 	"time"
-	"www/bwy/config"
+	"go-blog/bwy/config"
 )
 
 func MyLog(logs string) {
