@@ -3,12 +3,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{.ArticleData.Headline}} - {{.Title}}</title>
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?v=1.1.5">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/art.css?v=1.1.5">
+    <title>{{.ArticleData.headline}} - {{.Title}}</title>
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/reset.css">
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/index.css">
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/art.css">
 
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/layui/css/layui.css"  media="all">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
 {{template "_header"}}
@@ -62,7 +65,7 @@
             </form>
         </div>
     </div>
-    <script src="http://127.0.0.1:81/static/layui/layui.js" charset="utf-8"></script>
+    <script src="/static/layui/layui.js" charset="utf-8"></script>
     <script>
         //分页
         window.onload=function (){
@@ -147,9 +150,8 @@
                 return
             }
             console.log(data.CurrentPage);
-            layui.use(['laypage', 'layer'], function() {
-                var laypage = layui.laypage
-                        , layer = layui.layer;
+            layui.use(['laypage'], function() {
+                var laypage = layui.laypage;
 
                 laypage.render({
                     elem: 'page'

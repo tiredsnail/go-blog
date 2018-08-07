@@ -4,44 +4,25 @@
 <head>
     <title>{{.Title}}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/reset.css">
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/css/index.css?time=1.1.9">
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/reset.css">
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/index.css">
 </head>
 <body>
 {{template "_header"}}
 <div id="main">
     <div id="lside">
         <div class="white" >
-            <pre >
-                /**
-                * 我是一只大咸鱼
-                */
-                func parseComplexToken(token string, value []byte) interface{} {
-                    if value == nil {
-                        log.Warnf("Empty value")
-                        return complexToken{token, nil}
-                    }
+            <div id="lside">
+                <aside>
+                    <h4>左邻右舍 :</h4>
+                    <b style="margin-right: 50px;"><a href="https://www.yanshisan.cn/" target="_blank" title="燕十三">燕十三</a></b>
+                    <b style="margin-right: 50px;"><a href="http://www.birongsen.com/" target="_blank" title="小木鱼">小木鱼</a></b>
+                    <b style="margin-right: 50px;"><a href="https://zhang18.top/" target="_blank" title="ZLOE">ZLOE</a></b>
+                </aside>
 
-                    var v []map[string]string
-                    currentMap := make(map[string]string)
+                <p>努力不当代码搬运工 ... </p>
+            </div>
 
-                    matches := regexpSubfield.FindAll(value, -1)
-
-                    for _, sub := range matches {
-                        h, l := parseLine(sub)
-
-                        if _, contains := currentMap[string(h)]; contains {
-                            v = append(v, currentMap)
-                            currentMap = make(map[string]string)
-                        }
-
-                        currentMap[string(h)] = string(bytes.Trim(l, stringEmpty))
-                    }
-                    v = append(v, currentMap)
-
-                    return complexToken{token, v}
-                }
-            </pre>
         </div>
 
         <hr>

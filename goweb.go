@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 	"www/engine"
+
 	"flag"
-	 //_ "net/http/pprof" // pprof 的 http 路由注册在自带路由上
 )
 
 
@@ -32,8 +32,8 @@ func main() {
 
 
 func static() {
-	//h := http.FileServer(http.Dir("/Users/wangzhigang/go/src/www/static/css/"))
-	//http.Handle("/static/css/", http.StripPrefix("/static/css/", h)) // 启动静态文件服务
-	//Header().Set("Expires", time.Now().Format("MON, 02 Jan 2006 15:04:05 GMT"))
+	// 设置静态目录
+	fsh := http.FileServer(http.Dir("./views/static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fsh))
 }
 

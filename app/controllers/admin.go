@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 	"www/bwy"
-	"fmt"
 	"errors"
 	"io"
 	"crypto/rand"
@@ -110,6 +109,11 @@ func Admin_Index(w http.ResponseWriter,r *http.Request) {
 
 //文章列表
 func Admin_ArticleList(w http.ResponseWriter,r *http.Request) {
+	if err := checklogin(w ,r); err != nil {
+		w.Header().Set("Location", "/admin/login")
+		w.WriteHeader(302)
+		return
+	}
 	//接收参数
 	page := 1
 	req := strings.Split(r.URL.Path, "/")
@@ -131,6 +135,11 @@ func Admin_ArticleList(w http.ResponseWriter,r *http.Request) {
 }
 //文章 添加|修改
 func Admin_ArticleCreate(w http.ResponseWriter,r *http.Request) {
+	if err := checklogin(w ,r); err != nil {
+		w.Header().Set("Location", "/admin/login")
+		w.WriteHeader(302)
+		return
+	}
 	//判断 - 修改|添加
 	rd := AdminData{
 		Title: "文章(添加|修改) - 后台管理",
@@ -149,6 +158,11 @@ func Admin_ArticleCreate(w http.ResponseWriter,r *http.Request) {
 	MyTemplate.ExecuteTemplate(w, "article_create", rd)
 }
 func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
+	if err := checklogin(w ,r); err != nil {
+		w.Header().Set("Location", "/admin/login")
+		w.WriteHeader(302)
+		return
+	}
 	//post 数据
 	data := models.ArticleTable{
 		Headline: r.PostFormValue("headline"),
@@ -190,6 +204,11 @@ func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
 }
 //删除
 func Admin_ArticleDelete(w http.ResponseWriter,r *http.Request) {
+	if err := checklogin(w ,r); err != nil {
+		w.Header().Set("Location", "/admin/login")
+		w.WriteHeader(302)
+		return
+	}
 	rd := AdminData{
 		Title: "文章删除 - 后台管理",
 	}
@@ -215,6 +234,11 @@ func Admin_ArticleDelete(w http.ResponseWriter,r *http.Request) {
 
 //退出登录
 func Admin_outLogin(w http.ResponseWriter,r *http.Request) {
+	if err := checklogin(w ,r); err != nil {
+		w.Header().Set("Location", "/admin/login")
+		w.WriteHeader(302)
+		return
+	}
 	checklogindata.Token = ""
 	checklogindata.Maxage = 0
 
@@ -227,6 +251,11 @@ func Admin_outLogin(w http.ResponseWriter,r *http.Request) {
  * 评论
 */
 func Admin_CommentList(w http.ResponseWriter,r *http.Request) {
+	if err := checklogin(w ,r); err != nil {
+		w.Header().Set("Location", "/admin/login")
+		w.WriteHeader(302)
+		return
+	}
 	//接收参数
 	page := 1
 	req := strings.Split(r.URL.Path, "/")

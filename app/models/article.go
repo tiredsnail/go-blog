@@ -53,7 +53,7 @@ func ArticleCommentData() []map[string]string {
 func Archive() (list []map[string]string) {
 	DB := db.Db{}
 	DB.MysqlConnect()
-	select_sql := "select FROM_UNIXTIME(created_at, '%Y-%m') as created_at, count(*) as cnt from `blog_article` group by FROM_UNIXTIME(created_at, '%Y-%m')"
+	select_sql := "select FROM_UNIXTIME(created_at, '%Y-%m') as created_at, count(*) as cnt from `blog_article` group by FROM_UNIXTIME(created_at, '%Y-%m') desc"
 
 	select_rows,err := db.MysqlConn.Query(select_sql)
 	if err != nil {

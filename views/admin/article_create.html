@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{{.Title}}</title>
-    <link rel="stylesheet" href="http://127.0.0.1:81/static/wangEditor/release/wangEditor.css">
     <link rel="stylesheet" href="http://127.0.0.1:81/static/css/adm.css?v=1.1.12">
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <style>
         form {
             width:30%;
@@ -42,8 +45,8 @@
                 <label>状态:</label>
                 <p>
                     <select name="state">
-                        <option value="0">隐藏</option>
-                        <option value="1">显示</option>
+                        <option value="0" >隐藏</option>
+                        <option value="1" {{if .Article}}selected{{end}} >显示</option>
                     </select>
                 </p>
             </div>
@@ -74,8 +77,8 @@
 <footer>
     Copyright &copy; 2015 · GeneratePress · WordPress
 </footer>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-<script type="text/javascript" src="http://127.0.0.1:81/static/wangEditor/release/wangEditor.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script type="text/javascript" src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>
 <script type="text/javascript">
     var E = window.wangEditor
     var editor = new E('#editor')
