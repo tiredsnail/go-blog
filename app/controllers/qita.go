@@ -8,7 +8,7 @@ import (
 
 func About(w http.ResponseWriter,r *http.Request) {
 	rd := RetData{
-		Title: "关于 - 白乌鸦",
+		Title: "关于 - 白乌鸦 - 一个码农的博客",
 		Nav: LayoutType(),
 		Archive: models.Archive(),
 	}

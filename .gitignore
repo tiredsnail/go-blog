@@ -12,6 +12,9 @@
 *.out
 
 /.idea/
+storage/chain/
 
 *.log
-main
+goweb
+config.conf
+error.log

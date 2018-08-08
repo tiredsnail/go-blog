@@ -65,3 +65,10 @@ daemonize
         很多博客都提到要先增加对其它平台的支持，但是我跳过那一步，上面所列的命令也都能成功，
         且得到我想要的结果，可见那一步应该是非必须的，或是我所使用的 Go 版本已默认支持所有平台。
 
+
+
+
+<br>
+**守护进程**
+
+    daemonize -p /var/run/goweb.pid -l /var/lock/subsys/goweb -u nobody /app/goweb

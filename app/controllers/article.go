@@ -33,7 +33,7 @@ func Index(w http.ResponseWriter,r *http.Request) {
 	URL_PATH = ""
 
 	rd := RetData{
-		Title: "白乌鸦 - 一个phper的博客",
+		Title: "白乌鸦 - 一个码农的博客",
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
 		//Archive: models.Archive(),
@@ -60,7 +60,7 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 	URL_PATH = "/type/"+types
 
 	rd := RetData{
-		Title: types+ " - 白乌鸦 - 一个phper的博客",
+		Title: types+ " - 白乌鸦 - 一个码农的博客",
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"type_url='"+types+"'","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
 	}
@@ -74,7 +74,7 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 //归档页面
 func Archive(w http.ResponseWriter,r *http.Request) {
 	rd := RetData{
-		Title: "归档 - 白乌鸦",
+		Title: "归档 - 白乌鸦 - 一个码农的博客",
 		Archive: models.Archive(),
 	}
 	MyTemplate := bwy.InitTemplate()
