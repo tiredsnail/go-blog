@@ -18,3 +18,4 @@ storage/chain/
 goweb
 config.conf
 error.log
+test.go
