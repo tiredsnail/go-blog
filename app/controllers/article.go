@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"go-blog/bwy/db"
 )
 
 type RetData struct {
@@ -136,6 +137,9 @@ func Post(w http.ResponseWriter,r *http.Request) {
 		Nav: LayoutType(),
 		ArticleData: models.ArticlePosts(req[2]),
 	}
+	DB := db.Db{}
+	DB.MysqlConnect()
+	db.MysqlConn.Exec("UPDATE blog_article set pv=pv+1 WHERE article_id="+req[2])
 
 	MyTemplate := bwy.InitTemplate()
 	MyTemplate.ParseFiles("./views/post.html", "./views/common/_header.html", "./views/common/_rside.html")

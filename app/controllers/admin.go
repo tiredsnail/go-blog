@@ -14,6 +14,7 @@ import (
 	"strings"
 	"strconv"
 	"html/template"
+	"go-blog/bwy/config"
 )
 type AdminData struct {
 	Title				string
@@ -58,7 +59,7 @@ func Admin_Login(w http.ResponseWriter,r *http.Request) {
 	if r.Method == "POST" {
 		number := r.PostFormValue("bwy_number")
 		password := r.PostFormValue("bwy_password")
-		if number == "admin" && password == "123456" {
+		if number == config.CONFIG["init|app_number"] && password == config.CONFIG["init|app_password"] {
 			//生成唯一id
 			unique := make([]byte, 48)
 			if _, err := io.ReadFull(rand.Reader, unique); err == nil {
