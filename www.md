@@ -1,4 +1,8 @@
+    
     **v1.0.1任务**
+        使用 go-bindata 打包静态文件    - 不好搞
+            ../../bin/go-bindata  -pkg views -o assets/bindata.go views/
+        
         合并发送邮件代码 - 待定
         静态页面缓存
         404页面优化

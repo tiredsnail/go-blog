@@ -41,7 +41,7 @@ func main() {
 
 func static() {
 	// 设置静态目录
-	fsh := http.FileServer(http.Dir("./views/static"))
+	fsh := http.FileServer(http.Dir("./resources/static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fsh))
 }
 

@@ -27,7 +27,7 @@ type Db struct {
 
 func (DB *Db) MysqlConnect() *Db {
 	if MysqlConn == nil {
-		MysqlConn, _ = sql.Open("mysql", config.CONFIG["database|mysqlUser"]+":"+config.CONFIG["database|mysqlPwd"]+"@tcp("+config.CONFIG["database|mysqlHost"]+":"+config.CONFIG["database|mysqlPort"]+")/"+config.CONFIG["database|mysqlDatabase"])
+		MysqlConn, _ = sql.Open("mysql", config.CONFIG["database#mysqlUser"]+":"+config.CONFIG["database#mysqlPwd"]+"@tcp("+config.CONFIG["database#mysqlHost"]+":"+config.CONFIG["database#mysqlPort"]+")/"+config.CONFIG["database#mysqlDatabase"])
 		MysqlConn.SetMaxOpenConns(100)		//最大连接数
 		MysqlConn.SetMaxIdleConns(50)		//空闲连接数
 	}

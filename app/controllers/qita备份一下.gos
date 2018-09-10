@@ -4,17 +4,16 @@ import (
 	"net/http"
 	"go-blog/bwy"
 	"go-blog/app/models"
-	"go-blog/bwy/config"
 )
 
 func About(w http.ResponseWriter,r *http.Request) {
 	rd := RetData{
-		Title: "关于 - "+config.CONFIG["init#appIndexName"],
+		Title: "关于 - 白乌鸦 - 一个码农的博客",
 		Nav: LayoutType(),
 		Archive: models.Archive(),
 	}
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./resources/views/about.html", "./resources/views/common/_header.html")
+	MyTemplate.ParseFiles("./resources/about.html", "./resources/common/_header.html")
 	MyTemplate.ExecuteTemplate(w, "about", rd)
 }

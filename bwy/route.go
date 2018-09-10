@@ -18,7 +18,7 @@ func RouteAny(pattern string, handler func(http.ResponseWriter, *http.Request)) 
 
 func Match(w *http.ResponseWriter,r *http.Request) {
 	if r.URL.Path == "/favicon.ico" {
-		//t, _ :=template.ParseFiles("./views/static/favicon.ico")
+		//t, _ :=template.ParseFiles("./resources/static/favicon.ico")
 		//t.Execute(*w, t)
 		return
 	}
@@ -33,7 +33,7 @@ func Match(w *http.ResponseWriter,r *http.Request) {
 	}
 
 	//w.WriteHeader(404)
-	t, _ :=template.ParseFiles("./views/common/_404.html")
+	t, _ :=template.ParseFiles("./resources/common/_404.html")
 	t.Execute(*w, t)
 
 }

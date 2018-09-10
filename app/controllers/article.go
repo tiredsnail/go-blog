@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 	"go-blog/bwy/db"
+	"go-blog/bwy/config"
 )
 
 type RetData struct {
@@ -32,17 +33,18 @@ func Index(w http.ResponseWriter,r *http.Request) {
 
 	//分页使用
 	URL_PATH = ""
-
 	rd := RetData{
-		Title: "白乌鸦 - 一个码农的博客",
+		Title: config.CONFIG["init#appIndexName"],
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
 		//Archive: models.Archive(),
 	}
+	//初始化模板
 	MyTemplate := bwy.InitTemplate()
+	//定义 模板方法
 	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	//模板
-	MyTemplate.ParseFiles("./views/index.html", "./views/common/_list.html", "./views/common/_header.html", "./views/common/_rside.html")
+
+	MyTemplate.ParseFiles("resources/views/index.html", "resources/views/common/_header.html", "resources/views/common/_list.html","resources/views/common/_rside.html")
 	MyTemplate.ExecuteTemplate(w, "index", rd)
 }
 
@@ -61,26 +63,26 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 	URL_PATH = "/type/"+types
 
 	rd := RetData{
-		Title: types+ " - 白乌鸦 - 一个码农的博客",
+		Title: types+ " - "+config.CONFIG["init#appName"],
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"type_url='"+types+"'","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
 	}
 
 	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
 	//模板
-	MyTemplate.ParseFiles("./views/list.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ParseFiles("./resources/views/list.html", "./resources/views/common/_list.html", "./resources/views/common/_nav.html")
 	MyTemplate.ExecuteTemplate(w, "list", rd)
 }
 
 //归档页面
 func Archive(w http.ResponseWriter,r *http.Request) {
 	rd := RetData{
-		Title: "归档 - 白乌鸦 - 一个码农的博客",
+		Title: "归档 - "+config.CONFIG["init#appName"],
 		Archive: models.Archive(),
 	}
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./views/archive.html", "./views/common/_header.html")
+	MyTemplate.ParseFiles("./resources/views/archive.html", "./resources/views/common/_header.html")
 	MyTemplate.ExecuteTemplate(w, "archive", rd)
 }
 
@@ -113,7 +115,7 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 
 
 	rd := RetData{
-		Title: "归档|"+created_at+" - 白乌鸦",
+		Title: "归档|"+created_at+" - "+config.CONFIG["init#appIndexName"],
 		Description: "归档日期:"+created_at+" - 白乌鸦",
 		//Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"created_at>'"+strconv.Itoa(int(startTime))+"' and created_at<'"+strconv.Itoa(int(endTime))+"'","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
@@ -123,7 +125,7 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
 
 	//模板
-	MyTemplate.ParseFiles("./views/list.html", "./views/common/_list.html", "./views/common/_nav.html")
+	MyTemplate.ParseFiles("./resources/views/list.html", "./resources/views/common/_list.html", "./resources/views/common/_nav.html")
 	MyTemplate.ExecuteTemplate(w, "list", rd)
 }
 
@@ -133,7 +135,7 @@ func Post(w http.ResponseWriter,r *http.Request) {
 	req := strings.Split(r.URL.Path, "/")
 
 	rd := &RetData {
-		Title: "白乌鸦",
+		Title: config.CONFIG["init#appName"],
 		Nav: LayoutType(),
 		ArticleData: models.ArticlePosts(req[2]),
 	}
@@ -142,19 +144,10 @@ func Post(w http.ResponseWriter,r *http.Request) {
 	db.MysqlConn.Exec("UPDATE blog_article set pv=pv+1 WHERE article_id="+req[2])
 
 	MyTemplate := bwy.InitTemplate()
-	MyTemplate.ParseFiles("./views/post.html", "./views/common/_header.html", "./views/common/_rside.html")
+	MyTemplate.ParseFiles("./resources/views/post.html", "./resources/views/common/_header.html", "./resources/views/common/_rside.html")
 	MyTemplate.ExecuteTemplate(w, "post", &rd)
 
-	//MyTemplate := bwy.InitTemplate()
-	//MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	//MyTemplate.ParseFiles("./views/test.html","./views/common/_test.html")
-	//MyTemplate.ExecuteTemplate(w, "test", "")
-
 }
-
-//关于页面
-
-
 
 /**
 	最新评论文章
@@ -163,22 +156,3 @@ func ArticleNewComment() {
 
 }
 
-
-//分页
-func mypages(page int,currentPage int) template.HTML {
-	var pages string
-	if 1 != currentPage{
-		pages = "<li><a href='"+URL_PATH+"/'> 首页 </a></li>"
-	}
-	if currentPage > 2 {
-		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(currentPage-1)+"'>上一页</a></li>"
-	}
-	pages += "<li><a class='active' href='javascript:;'>"+strconv.Itoa(currentPage)+"</a></li>"
-	if currentPage < page-1 {
-		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(currentPage+1)+"'>下一页</a></li>"
-	}
-	if currentPage < page {
-		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(page)+"'> 末页 </a></li>"
-	}
-	return template.HTML(pages)
-}

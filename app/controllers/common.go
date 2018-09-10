@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"encoding/json"
 	"fmt"
+	"html/template"
+	"strconv"
 )
 
 type RetJson struct {
@@ -31,4 +33,23 @@ func (ret *RetJson) Success(w http.ResponseWriter) {
 
 func Error404(w http.ResponseWriter,r *http.Request) {
 
+}
+
+//分页
+func mypages(page int,currentPage int) template.HTML {
+	var pages string
+	if 1 != currentPage{
+		pages = "<li><a href='"+URL_PATH+"/'> 首页 </a></li>"
+	}
+	if currentPage > 2 {
+		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(currentPage-1)+"'>上一页</a></li>"
+	}
+	pages += "<li><a class='active' href='javascript:;'>"+strconv.Itoa(currentPage)+"</a></li>"
+	if currentPage < page-1 {
+		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(currentPage+1)+"'>下一页</a></li>"
+	}
+	if currentPage < page {
+		pages += "<li><a href='"+URL_PATH+"/page/"+strconv.Itoa(page)+"'> 末页 </a></li>"
+	}
+	return template.HTML(pages)
 }

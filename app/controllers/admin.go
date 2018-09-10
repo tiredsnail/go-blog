@@ -57,9 +57,9 @@ func Admin_Login(w http.ResponseWriter,r *http.Request) {
 		Title: "登录 - 后台管理",
 	}
 	if r.Method == "POST" {
-		number := r.PostFormValue("bwy_number")
-		password := r.PostFormValue("bwy_password")
-		if number == config.CONFIG["init|app_number"] && password == config.CONFIG["init|app_password"] {
+		number := r.PostFormValue("bwyNumber")
+		password := r.PostFormValue("bwyPassword")
+		if number == config.CONFIG["init#appNumber"] && password == config.CONFIG["init#appPassword"] {
 			//生成唯一id
 			unique := make([]byte, 48)
 			if _, err := io.ReadFull(rand.Reader, unique); err == nil {
@@ -87,7 +87,7 @@ func Admin_Login(w http.ResponseWriter,r *http.Request) {
 
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./views/admin/login.html", "./views/common/_admin_login.html")
+	MyTemplate.ParseFiles("./resources/views/admin/login.html", "./resources/views/common/_admin_login.html")
 	MyTemplate.ExecuteTemplate(w, "login", rd)
 }
 
@@ -104,7 +104,7 @@ func Admin_Index(w http.ResponseWriter,r *http.Request) {
 	}
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./views/admin/index.html", "./views/common/_admin_lside.html")
+	MyTemplate.ParseFiles("./resources/views/admin/index.html", "./resources/views/common/_admin_lside.html")
 	MyTemplate.ExecuteTemplate(w, "index", rd)
 }
 
@@ -131,7 +131,7 @@ func Admin_ArticleList(w http.ResponseWriter,r *http.Request) {
 	MyTemplate := bwy.InitTemplate()
 	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
 	//模板
-	MyTemplate.ParseFiles("./views/admin/article_list.html", "./views/common/_admin_lside.html")
+	MyTemplate.ParseFiles("./resources/views/admin/article_list.html", "./resources/views/common/_admin_lside.html")
 	MyTemplate.ExecuteTemplate(w, "article_list", rd)
 }
 //文章 添加|修改
@@ -155,7 +155,7 @@ func Admin_ArticleCreate(w http.ResponseWriter,r *http.Request) {
 
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./views/admin/article_create.html", "./views/common/_admin_lside.html")
+	MyTemplate.ParseFiles("./resources/views/admin/article_create.html", "./resources/views/common/_admin_lside.html")
 	MyTemplate.ExecuteTemplate(w, "article_create", rd)
 }
 func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
@@ -200,7 +200,7 @@ func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
 	}
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./views/admin/prompt.html", "./views/common/_admin_lside.html")
+	MyTemplate.ParseFiles("./resources/views/admin/prompt.html", "./resources/views/common/_admin_lside.html")
 	MyTemplate.ExecuteTemplate(w, "prompt", rd)
 }
 //删除
@@ -226,7 +226,7 @@ func Admin_ArticleDelete(w http.ResponseWriter,r *http.Request) {
 	}
 	MyTemplate := bwy.InitTemplate()
 	//模板
-	MyTemplate.ParseFiles("./views/admin/prompt.html", "./views/common/_admin_lside.html")
+	MyTemplate.ParseFiles("./resources/views/admin/prompt.html", "./resources/views/common/_admin_lside.html")
 	MyTemplate.ExecuteTemplate(w, "prompt", rd)
 }
 
@@ -273,7 +273,7 @@ func Admin_CommentList(w http.ResponseWriter,r *http.Request) {
 	MyTemplate := bwy.InitTemplate()
 	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
 	//模板
-	MyTemplate.ParseFiles("./views/admin/comment_list.html", "./views/common/_admin_lside.html")
+	MyTemplate.ParseFiles("./resources/views/admin/comment_list.html", "./resources/views/common/_admin_lside.html")
 	MyTemplate.ExecuteTemplate(w, "comment_list", rd)
 }
 func Admin_CommentState(w http.ResponseWriter,r *http.Request) {
