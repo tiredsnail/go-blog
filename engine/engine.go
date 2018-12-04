@@ -5,12 +5,21 @@ import (
 	bc "go-blog/bwy/config"
 	"go-blog/config"
 )
+//type App struct {
+//	Request 	*http.Request
+//	ResponseWriter http.ResponseWriter
+//}
+
 func Engine(w http.ResponseWriter,r *http.Request) {
 	//常量定义
 	//bwy.CONSTS_URL_PATH = r.URL.Path
 
 	//通过 url path 判断查询路由 调用匹配方法
 	// ....
+	//_ = App {
+	//	Request:r,
+	//	ResponseWriter:w,
+	//}
 	bwy.Match(&w, r)	//匹配路由
 }
 

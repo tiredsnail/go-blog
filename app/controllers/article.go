@@ -11,6 +11,8 @@ import (
 	"time"
 	"go-blog/bwy/db"
 	"go-blog/bwy/config"
+	"os"
+	"encoding/base64"
 )
 
 type RetData struct {
@@ -40,12 +42,26 @@ func Index(w http.ResponseWriter,r *http.Request) {
 		//Archive: models.Archive(),
 	}
 	//初始化模板
-	MyTemplate := bwy.InitTemplate()
+	MyTemplate := bwy.Templates
+	MyTemplate.
 	//定义 模板方法
-	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
+	MyTemplate.Template.Funcs(template.FuncMap{"mypages": mypages})
 
-	MyTemplate.ParseFiles("resources/views/index.html", "resources/views/common/_header.html", "resources/views/common/_list.html","resources/views/common/_rside.html")
-	MyTemplate.ExecuteTemplate(w, "index", rd)
+	MyTemplate.Template.Views(w, "index", rd,
+		"resources/views/index.html",
+		"resources/views/common/_header.html",
+		"resources/views/common/_list.html",
+		"resources/views/common/_rside.html")
+
+	//template.ParseFiles("resources/views/index.html", "resources/views/common/_header.html", "resources/views/common/_list.html","resources/views/common/_rside.html")
+	//MyTemplate.ExecuteTemplate(w, "index", rd)
+
+	uEnc := base64.URLEncoding.EncodeToString([]byte(r.URL.String()))
+	file,_ := os.OpenFile("storage/framework/views/"+uEnc, os.O_CREATE|os.O_WRONLY, 0755)
+	MyTemplate.ExecuteTemplate(file, "index", rd)
+
+
+
 }
 
 //分类文章列表

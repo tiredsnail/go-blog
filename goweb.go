@@ -1,14 +1,13 @@
 package main
 
 import (
-	"net/http"
-	"go-blog/engine"
 	"flag"
 	"fmt"
-	"path/filepath"
+	"go-blog/engine"
+	"net/http"
 	"os"
+	"path/filepath"
 )
-
 
 func main() {
 	//配置文件
@@ -20,7 +19,7 @@ func main() {
 	flag.Parse()
 	engine.Inits(*ConfPath)
 
-	static()	//静态文件处理
+	static() //静态文件处理
 	http.HandleFunc("/", engine.Engine)
 	go func() {
 		err = http.ListenAndServe(":80", nil)
@@ -30,18 +29,15 @@ func main() {
 		}
 	}()
 
-	err = http.ListenAndServeTLS(":443", "./storage/chain/full_chain.pem","./storage/chain/private.key", nil)
+	err = http.ListenAndServeTLS(":443", "./storage/chain/full_chain.pem", "./storage/chain/private.key", nil)
 	if err != nil {
-		fmt.Println("开启HTTPS协议失败",err.Error())
+		fmt.Println("开启HTTPS协议失败", err.Error())
 	}
 
-
 }
-
 
 func static() {
 	// 设置静态目录
 	fsh := http.FileServer(http.Dir("./resources/static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fsh))
 }
-

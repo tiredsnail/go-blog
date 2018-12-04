@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/reset.css">
+    <link rel="stylesheet" href="//cdn1.baiwuya.cn/blog_baiwuya/css/index.css">
+</head>
+<body>
+
+
+<header>
+    <h1><a href="/">Bai Wu Ya  一个码农的博客</a></h1>
+    <h4>
+        <span>漫漫全栈路，何曾有坦途 ... This is an application developed with golang</span>
+        <span style="float:right;">
+            GitHub: <a href="https://github.com/ibaiwuya" target="view_window">https://github.com/ibaiwuya</a>
+            <b>|</b>
+            Email: <a href="mailto:ibaiwuya@163.com" rel="nofollow">ibaiwuya@163.com</a>
+        </span>
+    </h4>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/archive">归档</a></li>
+        <li><a href="/about">关于</a></li>
+    </ul>
+</nav>
+
+
+<div id="main">
+
+
+
+<div id="lside">
+    
+        <article>
+            <h3 class="line-limit-length-title"><a href="/post/41">php常用设计模式及简单案例</a></h3>
+            <div class="entry_header">
+                <time>2018-08-08 00:17:35</time>
+                <a href="/type/php">PHP</a>
+                <span>0条评论</span>
+                <span>12人浏览</span>
+            </div>
+            <div class="entry_content">
+                工厂模式,单列模式,注册树模式,适配器模式,策略模式,数据对象映射模式,观察者模式,原型模式,适配器模式,迭代器模式,代理模式
+            </div>
+        </article>
+    
+        <article>
+            <h3 class="line-limit-length-title"><a href="/post/40">我的常用工具 ,网站</a></h3>
+            <div class="entry_header">
+                <time>2018-08-07 23:50:19</time>
+                <a href="/type/other">other</a>
+                <span>0条评论</span>
+                <span>14人浏览</span>
+            </div>
+            <div class="entry_content">
+                PHP IDE: phpstrom ,编辑器sublime text ,内网穿透服务器Ngrok ,Windows下文件搜索神器Everything
+            </div>
+        </article>
+    
+        <article>
+            <h3 class="line-limit-length-title"><a href="/post/39">php7安装redis扩展</a></h3>
+            <div class="entry_header">
+                <time>2017-08-12 22:12:56</time>
+                <a href="/type/php">PHP</a>
+                <span>0条评论</span>
+                <span>11人浏览</span>
+            </div>
+            <div class="entry_content">
+                移动到下载文件夹：cd /root/src（具体文件夹自己选择）
+下载php7-redis：wget https://github.com/phpredis/phpredis/archive/3.1.4.zip
+//扩展github
+https://github.com/phpredis/phpredis/releases
+//这里也可以下载
+http://pecl.php.net/package/redis
+            </div>
+        </article>
+    
+    <div class="pagebar">
+        Pages(3)
+        <ul class="pagination">
+            <li><a href='/'> 首页 </a></li><li><a class='active' href='javascript:;'>2</a></li><li><a href='/page/3'> 末页 </a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div id="rside">
+    
+        
+        
+        
+            
+        
+            
+        
+        
+    
+    <aside>
+        <h4>分类</h4>
+        <ul>
+        
+            <li class="line-limit-length"><a href="/type/golang">GoLang</a></li>
+        
+            <li class="line-limit-length"><a href="/type/mysql">Mysql</a></li>
+        
+            <li class="line-limit-length"><a href="/type/php">PHP</a></li>
+        
+            <li class="line-limit-length"><a href="/type/other">other</a></li>
+        
+        </ul>
+    </aside>
+    <aside>
+        <h4>公众号:</h4>
+        <img src="https://cdn1.baiwuya.cn/blog/assets/wxgzh.jpg" alt="" width="200px">
+    </aside>
+</div>
+
+
+</div>
+<footer>
+    Copyright &copy; 2017-2018 Bai Wu Ya
+</footer>
+</body>
+</html>

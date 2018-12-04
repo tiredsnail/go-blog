@@ -1,15 +1,15 @@
 package main
 
 import (
-	"net/smtp"
-	"strings"
-	"net/http"
 	"flag"
-	"www/engine"
-	"www/bwy/db"
 	"fmt"
-	"time"
+	"net/http"
+	"net/smtp"
 	"strconv"
+	"strings"
+	"time"
+	"www/bwy/db"
+	"www/engine"
 )
 
 func SendToMail(user, password, host, to, subject, body, mailtype string, nick string) error {
@@ -22,7 +22,7 @@ func SendToMail(user, password, host, to, subject, body, mailtype string, nick s
 		content_type = "Content-Type: text/plain" + "; charset=UTF-8"
 	}
 
-	msg := []byte("To: " + to + "\r\nFrom: <" + nick + ">\r\nSubject: " +subject+ "\r\n" + content_type + "\r\n\r\n" + body)
+	msg := []byte("To: " + to + "\r\nFrom: <" + nick + ">\r\nSubject: " + subject + "\r\n" + content_type + "\r\n\r\n" + body)
 	send_to := strings.Split(to, ";")
 	err := smtp.SendMail(host, auth, user, send_to, msg)
 	return err
@@ -47,19 +47,19 @@ func main() {
 	subject := "BaiWy 评论回复通知 ... "
 	//如果没有任务 10 秒读取一次数据库 , 判断任务数量 , 并发处理. 最多3并发 . 300数据
 	// email
-	ticker := time.NewTicker(time.Second * 10)		//10秒执行一次
-	go func() { //协程
+	ticker := time.NewTicker(time.Second * 10) //10秒执行一次
+	go func() {                                //协程
 		for {
 			//查询是否有任务
 			DB := db.Db{}
-			list,err := DB.Table("blog_comment_email").Select("comment_email_id,email,content,error_num").Limit("1,50").Where("state=0").Get()
+			list, err := DB.Table("blog_comment_email").Select("comment_email_id,email,content,error_num").Limit("1,50").Where("state=0").Get()
 			if err != nil {
-				<-ticker.C		//10秒执行一次
+				<-ticker.C //10秒执行一次
 				continue
 			}
 			fmt.Println(time.Now().Unix())
 			if len(list) > 0 {
-				for _,v := range list {
+				for _, v := range list {
 					emailerr := SendToMail(user, password, host, v["email"], subject, v["content"], "html", nick)
 					if emailerr != nil {
 						//DB := db.Db{}
@@ -68,8 +68,8 @@ func main() {
 						if err != nil {
 							continue
 						}
-						error_num,_ := strconv.Atoi(v["error_num"])
-						_, err = stmt.Exec(2, error_num+1, emailerr.Error(), time.Now().Unix(), v["comment_email_id"] )
+						error_num, _ := strconv.Atoi(v["error_num"])
+						_, err = stmt.Exec(2, error_num+1, emailerr.Error(), time.Now().Unix(), v["comment_email_id"])
 						if err != nil {
 							continue
 						}
@@ -88,17 +88,16 @@ func main() {
 							continue
 						}
 						num, err := res.RowsAffected()
-						fmt.Println("Send success",v["email"],num)
+						fmt.Println("Send success", v["email"], num)
 
 					}
 				}
 			} else { //没有 等待10秒
-				<-ticker.C		//10秒执行一次
+				<-ticker.C //10秒执行一次
 			}
 
 		}
 	}()
-
 
 	http.HandleFunc("/monitor", func(writer http.ResponseWriter, request *http.Request) {
 

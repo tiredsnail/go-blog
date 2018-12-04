@@ -8,15 +8,18 @@ import (
 	"io"
 )
 
-//var MyTemplate struct{
-//	Template *template.Template
-//}
+type Template interface {
+	InitTemplate(Tname string)
+}
+var Templates struct {
+	MyTemplate *template.Template
+}
 
-func InitTemplate() (MyTemplate *template.Template){
-	MyTemplate = template.New("")
+func (t *Templates) InitTemplate(Tname string) {
+	t.MyTemplate = t.MyTemplate.New(Tname)
 	//自定义公共 模板方法
-	MyTemplate = MyTemplate.Funcs(template.FuncMap{"unescaped": unescaped,"strtotime": strtotime})
-	return MyTemplate
+	t.MyTemplate = t.MyTemplate.Funcs(template.FuncMap{"unescaped": unescaped,"strtotime": strtotime})
+	//return MyTemplate
 	//MyTemplate ,err = MyTemplate.ParseFiles(fileName...)
 	////MyTemplate = template.Must()
 	//if err != nil{
@@ -25,7 +28,7 @@ func InitTemplate() (MyTemplate *template.Template){
 	//}
 }
 
-func View(wr io.Writer, name string, data interface{}) {
+func (t *Templates) Views(wr io.Writer, name string, data interface{},filenames ...string) {
 
 	//MyTemplate.ExecuteTemplate(wr, name, data)
 }

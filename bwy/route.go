@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"regexp"
 	"html/template"
+	"go-blog/bwy/config"
 )
 type www struct {
 	match string
@@ -23,6 +24,9 @@ func Match(w *http.ResponseWriter,r *http.Request) {
 		return
 	}
 
+	//Middleware
+	Middleware(w,r)
+
 	for i:=0; i<len(route); i++ {
 		regexps := regexp.MustCompile("("+route[i].match+")");
 		matchs := regexps.FindSubmatch([]byte(r.URL.Path))
@@ -35,6 +39,28 @@ func Match(w *http.ResponseWriter,r *http.Request) {
 	//w.WriteHeader(404)
 	t, _ :=template.ParseFiles("./resources/common/_404.html")
 	t.Execute(*w, t)
+
+}
+
+/**
+ * Middleware
+*/
+func Middleware(w *http.ResponseWriter,r *http.Request) {
+
+}
+
+/**
+ * Output
+*/
+func Output() {
+
+}
+
+func HtmlCache(w *http.ResponseWriter,r *http.Request) {
+	if config.CONFIG["init#HtmlCache"] != "true" {
+		return
+	}
+
 
 }
 

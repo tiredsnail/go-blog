@@ -1,14 +1,13 @@
 package main
 
 import (
-	"net/http"
-	"go-blog/engine"
 	"flag"
 	"fmt"
-	"path/filepath"
+	"go-blog/engine"
+	"net/http"
 	"os"
+	"path/filepath"
 )
-
 
 func main() {
 	//go func() {
@@ -19,12 +18,12 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	dir = "/Users/wangzhigang/go/src/go-blog"		//开发环境
+	dir = "/Users/wangzhigang/go/src/go-blog" //开发环境
 	ConfPath := flag.String("cpath", dir+"/config.conf", "config file")
 	flag.Parse()
 	engine.Inits(*ConfPath)
 
-	static()	//静态文件处理
+	static() //静态文件处理
 	http.HandleFunc("/", engine.Engine)
 	//go func() {
 	//	err = http.ListenAndServeTLS(":443", "./storage/chain/full_chain.pem","./storage/chain/private.key", nil)
@@ -39,13 +38,10 @@ func main() {
 		http.ListenAndServe(":6060", nil)
 	}
 
-
 }
-
 
 func static() {
 	// 设置静态目录
 	fsh := http.FileServer(http.Dir("./resources/static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fsh))
 }
-
