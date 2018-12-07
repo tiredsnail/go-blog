@@ -1,4 +1,4 @@
-package bwy
+package snail_web
 
 
 import (
@@ -11,15 +11,16 @@ import (
 type Template interface {
 	InitTemplate(Tname string)
 }
-var Templates struct {
-	MyTemplate *template.Template
-}
 
-func (t *Templates) InitTemplate(Tname string) {
-	t.MyTemplate = t.MyTemplate.New(Tname)
+var FuncMap template.FuncMap
+
+func InitTemplate(Tname string) *template.Template {
+	t := template.New(Tname)
 	//自定义公共 模板方法
-	t.MyTemplate = t.MyTemplate.Funcs(template.FuncMap{"unescaped": unescaped,"strtotime": strtotime})
-	//return MyTemplate
+	t = t.Funcs(template.FuncMap{"unescaped": unescaped,"strtotime": strtotime})
+
+	return t
+
 	//MyTemplate ,err = MyTemplate.ParseFiles(fileName...)
 	////MyTemplate = template.Must()
 	//if err != nil{
@@ -28,9 +29,16 @@ func (t *Templates) InitTemplate(Tname string) {
 	//}
 }
 
-func (t *Templates) Views(wr io.Writer, name string, data interface{},filenames ...string) {
+func Views(Tname string, wr io.Writer, name string, data interface{},filenames ...string) {
+	t := template.New(Tname)
+	//自定义公共 模板方法
+	t = t.Funcs(template.FuncMap{"unescaped": unescaped,"strtotime": strtotime})
+	//FuncMap := template.FuncMap{"unescaped": unescaped,"strtotime": strtotime}
+	t = t.Funcs(FuncMap)
 
-	//MyTemplate.ExecuteTemplate(wr, name, data)
+	t = template.Must(t.ParseFiles(filenames ...))
+
+	t.ExecuteTemplate(wr, name, data)
 }
 
 //添加函数方法

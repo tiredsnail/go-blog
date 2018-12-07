@@ -2,17 +2,17 @@ package controllers
 
 import (
 	"net/http"
-	"html/template"
-	"go-blog/bwy"
-	"fmt"
 	"go-blog/app/models"
 	"strconv"
 	"strings"
+	"go-blog/snail-web/config"
+	"html/template"
+	"go-blog/snail-web"
 	"time"
-	"go-blog/bwy/db"
-	"go-blog/bwy/config"
-	"os"
-	"encoding/base64"
+	"fmt"
+	"go-blog/snail-web/db"
+	"go-blog/snail-web/_template"
+	"go-blog/snail-web/const"
 )
 
 type RetData struct {
@@ -23,8 +23,8 @@ type RetData struct {
 	Archive		[]map[string]string
 	ArticleData map[string]string
 }
-var URL_PATH string
 func Index(w http.ResponseWriter,r *http.Request) {
+
 	//接收参数
 	page := 1
 	req := strings.Split(r.URL.Path, "/")
@@ -34,37 +34,31 @@ func Index(w http.ResponseWriter,r *http.Request) {
 	}
 
 	//分页使用
-	URL_PATH = ""
+	_const.REQUEST_URI = ""
 	rd := RetData{
 		Title: config.CONFIG["init#appIndexName"],
 		Nav: LayoutType(),
 		ArticleList: models.ArticlePostList(page, 3,"","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
 		//Archive: models.Archive(),
 	}
-	//初始化模板
-	MyTemplate := bwy.Templates
-	MyTemplate.
-	//定义 模板方法
-	MyTemplate.Template.Funcs(template.FuncMap{"mypages": mypages})
 
-	MyTemplate.Template.Views(w, "index", rd,
+	snail_web.FuncMap = template.FuncMap{"Tpages": _template.Tpages}
+	snail_web.Views("", w, "index", rd,
 		"resources/views/index.html",
 		"resources/views/common/_header.html",
 		"resources/views/common/_list.html",
 		"resources/views/common/_rside.html")
 
-	//template.ParseFiles("resources/views/index.html", "resources/views/common/_header.html", "resources/views/common/_list.html","resources/views/common/_rside.html")
-	//MyTemplate.ExecuteTemplate(w, "index", rd)
-
-	uEnc := base64.URLEncoding.EncodeToString([]byte(r.URL.String()))
-	file,_ := os.OpenFile("storage/framework/views/"+uEnc, os.O_CREATE|os.O_WRONLY, 0755)
-	MyTemplate.ExecuteTemplate(file, "index", rd)
-
-
+	//uEnc := base64.URLEncoding.EncodeToString([]byte(r.URL.String()))
+	//file,_ := os.OpenFile("storage/framework/views/"+uEnc, os.O_CREATE|os.O_WRONLY, 0755)
+	//MyTemplate.MyTemplate.ExecuteTemplate(file, "index", rd)
 
 }
 
-//分类文章列表
+
+/**
+	分类文章列表
+*/
 func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 	page := 1
 	//接收参数
@@ -76,7 +70,7 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 	types := req[2]
 
 	//分页使用
-	URL_PATH = "/type/"+types
+	_const.REQUEST_URI = "/type/"+types
 
 	rd := RetData{
 		Title: types+ " - "+config.CONFIG["init#appName"],
@@ -84,10 +78,9 @@ func TypeArticleList(w http.ResponseWriter,r *http.Request) {
 		ArticleList: models.ArticlePostList(page, 3,"type_url='"+types+"'","article_id,type_url,type_name,headline,summary,updated_at,comm,pv"),
 	}
 
-	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
-	//模板
-	MyTemplate.ParseFiles("./resources/views/list.html", "./resources/views/common/_list.html", "./resources/views/common/_nav.html")
-	MyTemplate.ExecuteTemplate(w, "list", rd)
+	snail_web.FuncMap = template.FuncMap{"Tpages": _template.Tpages}
+	snail_web.Views("", w, "list", rd,
+		"./resources/views/list.html", "./resources/views/common/_list.html", "./resources/views/common/_nav.html")
 }
 
 //归档页面
@@ -96,10 +89,9 @@ func Archive(w http.ResponseWriter,r *http.Request) {
 		Title: "归档 - "+config.CONFIG["init#appName"],
 		Archive: models.Archive(),
 	}
-	MyTemplate := bwy.InitTemplate()
-	//模板
-	MyTemplate.ParseFiles("./resources/views/archive.html", "./resources/views/common/_header.html")
-	MyTemplate.ExecuteTemplate(w, "archive", rd)
+
+	snail_web.Views("", w, "archive", rd,
+		"./resources/views/archive.html", "./resources/views/common/_header.html")
 }
 
 //归档文章列表
@@ -114,7 +106,7 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 	created_at := req[2]
 
 	//分页使用
-	URL_PATH = "/archive/"+created_at
+	_const.REQUEST_URI = "/archive/"+created_at
 
 	theTime ,err := time.ParseInLocation("2006-01",created_at,time.Local)
 	if err != nil {
@@ -138,11 +130,10 @@ func ArchiveArticleList(w http.ResponseWriter,r *http.Request) {
 		Archive: models.Archive(),
 	}
 
-	MyTemplate := bwy.InitTemplate().Funcs(template.FuncMap{"mypages": mypages})
 
-	//模板
-	MyTemplate.ParseFiles("./resources/views/list.html", "./resources/views/common/_list.html", "./resources/views/common/_nav.html")
-	MyTemplate.ExecuteTemplate(w, "list", rd)
+	snail_web.FuncMap = template.FuncMap{"Tpages": _template.Tpages}
+	snail_web.Views("", w, "list", rd,
+		"./resources/views/list.html", "./resources/views/common/_list.html", "./resources/views/common/_nav.html")
 }
 
 //文章详情
@@ -159,16 +150,7 @@ func Post(w http.ResponseWriter,r *http.Request) {
 	DB.MysqlConnect()
 	db.MysqlConn.Exec("UPDATE blog_article set pv=pv+1 WHERE article_id="+req[2])
 
-	MyTemplate := bwy.InitTemplate()
-	MyTemplate.ParseFiles("./resources/views/post.html", "./resources/views/common/_header.html", "./resources/views/common/_rside.html")
-	MyTemplate.ExecuteTemplate(w, "post", &rd)
-
-}
-
-/**
-	最新评论文章
-*/
-func ArticleNewComment() {
-
+	snail_web.Views("", w, "post", rd,
+		"./resources/views/post.html", "./resources/views/common/_header.html", "./resources/views/common/_rside.html")
 }
 

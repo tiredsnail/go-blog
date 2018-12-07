@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"net/http"
-	"go-blog/bwy"
+	"go-blog/snail-web"
 	"errors"
 	"io"
 	"crypto/rand"
@@ -14,7 +14,9 @@ import (
 	"strings"
 	"strconv"
 	"html/template"
-	"go-blog/bwy/config"
+	"go-blog/snail-web/config"
+	"go-blog/snail-web/_template"
+	"go-blog/snail-web/const"
 )
 type AdminData struct {
 	Title				string
@@ -38,7 +40,7 @@ func checklogin(w http.ResponseWriter,r *http.Request) (errs error) {
 	}
 
 	//查找
-	if checklogindata.Token != cookie.Value || cookie.Value == ""{
+	if checklogindata.Token != cookie.Value || cookie.Value == "" {
 		return errors.New("token不匹配")
 	}
 	//判断 token 是否过期
@@ -85,10 +87,8 @@ func Admin_Login(w http.ResponseWriter,r *http.Request) {
 
 	}
 
-	MyTemplate := bwy.InitTemplate()
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/login.html", "./resources/views/common/_admin_login.html")
-	MyTemplate.ExecuteTemplate(w, "login", rd)
+	snail_web.Views("", w, "login", rd,
+		"./resources/views/admin/login.html", "./resources/views/common/_admin_login.html")
 }
 
 //首页
@@ -102,10 +102,9 @@ func Admin_Index(w http.ResponseWriter,r *http.Request) {
 	rd := AdminData{
 		Title: "后台管理",
 	}
-	MyTemplate := bwy.InitTemplate()
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/index.html", "./resources/views/common/_admin_lside.html")
-	MyTemplate.ExecuteTemplate(w, "index", rd)
+
+	snail_web.Views("", w, "index", rd,
+		"./resources/views/admin/index.html", "./resources/views/common/_admin_lside.html")
 }
 
 //文章列表
@@ -123,16 +122,15 @@ func Admin_ArticleList(w http.ResponseWriter,r *http.Request) {
 		if page ==0 {page++}
 	}
 	//分页使用
-	URL_PATH = "/admin/article"
-	rd := AdminData{
+	_const.REQUEST_URI = "/admin/article"
+	rd := AdminData {
 		Title: "文章列表 - 后台管理",
 		ArticlePageData: models.ArticlePostList(page, 10,"","*"),
 	}
-	MyTemplate := bwy.InitTemplate()
-	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/article_list.html", "./resources/views/common/_admin_lside.html")
-	MyTemplate.ExecuteTemplate(w, "article_list", rd)
+
+	snail_web.FuncMap = template.FuncMap{"Tpages": _template.Tpages}
+	snail_web.Views("", w, "article_list", rd,
+		"./resources/views/admin/article_list.html", "./resources/views/common/_admin_lside.html")
 }
 //文章 添加|修改
 func Admin_ArticleCreate(w http.ResponseWriter,r *http.Request) {
@@ -153,10 +151,8 @@ func Admin_ArticleCreate(w http.ResponseWriter,r *http.Request) {
 	}
 
 
-	MyTemplate := bwy.InitTemplate()
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/article_create.html", "./resources/views/common/_admin_lside.html")
-	MyTemplate.ExecuteTemplate(w, "article_create", rd)
+	snail_web.Views("", w, "article_create", rd,
+		"./resources/views/admin/article_create.html", "./resources/views/common/_admin_lside.html")
 }
 func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
 	if err := checklogin(w ,r); err != nil {
@@ -198,10 +194,8 @@ func Admin_ArticleCreateButton(w http.ResponseWriter,r *http.Request) {
 	} else {
 		rd.Prompt = "操作成功"
 	}
-	MyTemplate := bwy.InitTemplate()
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/prompt.html", "./resources/views/common/_admin_lside.html")
-	MyTemplate.ExecuteTemplate(w, "prompt", rd)
+	snail_web.Views("", w, "prompt", rd,
+		"./resources/views/admin/prompt.html", "./resources/views/common/_admin_lside.html")
 }
 //删除
 func Admin_ArticleDelete(w http.ResponseWriter,r *http.Request) {
@@ -224,10 +218,8 @@ func Admin_ArticleDelete(w http.ResponseWriter,r *http.Request) {
 	} else {
 		rd.Prompt = "参数错误"
 	}
-	MyTemplate := bwy.InitTemplate()
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/prompt.html", "./resources/views/common/_admin_lside.html")
-	MyTemplate.ExecuteTemplate(w, "prompt", rd)
+	snail_web.Views("", w, "prompt", rd,
+		"./resources/views/admin/prompt.html", "./resources/views/common/_admin_lside.html")
 }
 
 
@@ -265,16 +257,14 @@ func Admin_CommentList(w http.ResponseWriter,r *http.Request) {
 		if page ==0 {page++}
 	}
 	//分页使用
-	URL_PATH = "/admin/comment"
+	_const.REQUEST_URI = "/admin/comment"
 	rd := AdminData{
 		Title: "评论列表 - 后台管理",
 		CommentPageData: models.CommentList(page, 10,"1"),
 	}
-	MyTemplate := bwy.InitTemplate()
-	MyTemplate.Funcs(template.FuncMap{"mypages": mypages})
-	//模板
-	MyTemplate.ParseFiles("./resources/views/admin/comment_list.html", "./resources/views/common/_admin_lside.html")
-	MyTemplate.ExecuteTemplate(w, "comment_list", rd)
+	snail_web.FuncMap = template.FuncMap{"Tpages": _template.Tpages}
+	snail_web.Views("", w, "comment_list", rd,
+		"./resources/views/admin/comment_list.html", "./resources/views/common/_admin_lside.html")
 }
 func Admin_CommentState(w http.ResponseWriter,r *http.Request) {
 

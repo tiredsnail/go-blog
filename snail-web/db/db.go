@@ -3,8 +3,8 @@ package db
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"go-blog/bwy/config"
-	"go-blog/bwy"
+	"go-blog/snail-web/config"
+	"go-blog/snail-web"
 	"strings"
 	"log"
 )
@@ -95,7 +95,7 @@ func (DB *Db) Get() ([]map[string]string,error) {
 	//查询多条
 	select_rows,err := MysqlConn.Query(select_sql)
 	if err != nil {
-		bwy.MyLog("MySql错误:...bwy/db/db.go line 95 [error:"+err.Error()+"]")
+		snail_web.MyLog("MySql错误:...snail-web/db/db.go line 95 [error:"+err.Error()+"]")
 		return data,err
 	}
 	for select_rows.Next() {
@@ -179,7 +179,7 @@ func (DB *Db) Count() (int,error) {
 	var count int
 	err := MysqlConn.QueryRow(sql).Scan(&count)
 	if err != nil {
-		bwy.MyLog("MySql错误:...bwy/db/db.go line 149 [error:"+err.Error()+"]")
+		snail_web.MyLog("MySql错误:...snail-web/db/db.go line 149 [error:"+err.Error()+"]")
 		return 0,err
 	}
 	//MysqlConn.Close()	 | 不需要关闭

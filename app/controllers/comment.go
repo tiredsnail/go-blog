@@ -7,8 +7,9 @@ import (
 	"strings"
 	"time"
 	"strconv"
-	"go-blog/bwy"
-	"go-blog/bwy/db"
+	"go-blog/snail-web"
+	"go-blog/snail-web/db"
+	"go-blog/app/func"
 )
 
 func CommentAdd(w http.ResponseWriter,r *http.Request) {
@@ -22,7 +23,7 @@ func CommentAdd(w http.ResponseWriter,r *http.Request) {
 		Pid:r.PostFormValue("pid"),
 	}
 	data.Created_at = strconv.Itoa(int(time.Now().Unix()))
-	ret := RetJson{}
+	ret := _func.RetJson{}
 	if data.Username == "" || data.Email == "" || data.Content == "" {
 		ret.Status = "err"
 		ret.Msg = "请求参数错误"
@@ -87,7 +88,7 @@ func CommentAdd(w http.ResponseWriter,r *http.Request) {
 		`
 		_ ,err = models.CommentEmailQueuePut(commentEmailQueue)
 		if err != nil {
-			bwy.MyLog("加入评论回复任务队列失败["+err.Error()+"],comment_id:"+commentEmailQueue["comment_id"])
+			snail_web.MyLog("加入评论回复任务队列失败["+err.Error()+"],comment_id:"+commentEmailQueue["comment_id"])
 		}
 	}
 
@@ -108,7 +109,7 @@ func CommentList(w http.ResponseWriter,r *http.Request) {
 
 	data := models.CommentList(page,5,article_id)
 
-	ret := RetJson{}
+	ret := _func.RetJson{}
 	ret.Status = "ok"
 	ret.Msg = "查询成功"
 	ret.Data = data

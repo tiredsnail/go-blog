@@ -1,10 +1,10 @@
 package models
 
 import (
-	"go-blog/bwy/db"
+	"go-blog/snail-web/db"
 	"strconv"
 	"math"
-	"go-blog/bwy"
+	"go-blog/snail-web"
 	"log"
 	"strings"
 )
@@ -34,12 +34,12 @@ func CommentAdd(data *CommentData) (int64,error) {
 	DB.MysqlConnect()	//取sql连接
 	stmt, err := db.MysqlConn.Prepare(`INSERT blog_comment (article_id, nick, email, url, content, Pid, ip, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
 	if err != nil {
-		bwy.MyLog("评论添加失败 failed Prepare")
+		snail_web.MyLog("评论添加失败 failed Prepare")
 		return 0,err
 	}
 	rows, err := stmt.Exec(&data.Article_id,&data.Username,&data.Email,&data.Url,&data.Content,&data.Pid,&data.Ip,&data.Created_at)
 	if err != nil {
-		bwy.MyLog("评论添加失败 failed Exec")
+		snail_web.MyLog("评论添加失败 failed Exec")
 		return 0,err
 	}
 	comment_id,err := rows.LastInsertId()

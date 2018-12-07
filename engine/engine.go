@@ -1,8 +1,8 @@
 package engine
 import (
 	"net/http"
-	"go-blog/bwy"
-	bc "go-blog/bwy/config"
+	"go-blog/snail-web"
+	bc "go-blog/snail-web/config"
 	"go-blog/config"
 )
 //type App struct {
@@ -11,16 +11,10 @@ import (
 //}
 
 func Engine(w http.ResponseWriter,r *http.Request) {
-	//常量定义
-	//bwy.CONSTS_URL_PATH = r.URL.Path
+	//定义常量
+	//_const.Request(r)
 
-	//通过 url path 判断查询路由 调用匹配方法
-	// ....
-	//_ = App {
-	//	Request:r,
-	//	ResponseWriter:w,
-	//}
-	bwy.Match(&w, r)	//匹配路由
+	snail_web.Match(&w, r) //匹配路由
 }
 
 func Inits(ConfPath string) {

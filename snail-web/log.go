@@ -1,10 +1,10 @@
-package bwy
+package snail_web
 
 import (
 	"os"
 	"fmt"
 	"time"
-	"go-blog/bwy/config"
+	"go-blog/snail-web/config"
 )
 
 func MyLog(logs string) {

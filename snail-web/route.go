@@ -1,20 +1,20 @@
-package bwy
+package snail_web
 
 import (
 	"net/http"
 	"regexp"
 	"html/template"
-	"go-blog/bwy/config"
+	"go-blog/snail-web/config"
 )
-type www struct {
+type web struct {
 	match string
 	handler func(http.ResponseWriter, *http.Request)
 }
 
-var route []www
+var route []web
 
 func RouteAny(pattern string, handler func(http.ResponseWriter, *http.Request)) {
-	route = append(route, www{match:pattern,handler:handler})
+	route = append(route, web{match:pattern,handler:handler})
 }
 
 func Match(w *http.ResponseWriter,r *http.Request) {

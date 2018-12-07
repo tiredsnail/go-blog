@@ -1,7 +1,7 @@
 package models
 
 import (
-	"go-blog/bwy/db"
+	"go-blog/snail-web/db"
 	"log"
 )
 

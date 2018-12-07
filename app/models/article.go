@@ -1,8 +1,8 @@
 package models
 
 import (
-	"go-blog/bwy"
-	"go-blog/bwy/db"
+	"go-blog/snail-web"
+	"go-blog/snail-web/db"
 	"log"
 	"math"
 	"strconv"
@@ -57,7 +57,7 @@ func Archive() (list []map[string]string) {
 
 	select_rows, err := db.MysqlConn.Query(select_sql)
 	if err != nil {
-		bwy.MyLog("MySql错误:...models/article.go line 58 [error:" + err.Error() + "]")
+		snail_web.MyLog("MySql错误:...models/article.go line 58 [error:" + err.Error() + "]")
 		return list
 	}
 	for select_rows.Next() {

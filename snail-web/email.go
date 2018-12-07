@@ -1,4 +1,4 @@
-package bwy
+package snail_web
 
 import (
 	"net/smtp"
